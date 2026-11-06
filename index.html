@@ -177,10 +177,6 @@
   .pv-card h1{font-size:30px; line-height:1.2; margin-bottom:8px;}
   .pv-card .lede{color:var(--muted); margin-bottom:16px;}
 
-  /* ---------- coming soon ---------- */
-  .soon{border:1.5px dashed #cdd4dc; border-radius:16px; padding:36px 28px; max-width:640px;}
-  .soon h2{font-size:20px; margin-bottom:8px;}
-  .soon p{color:var(--muted); margin-bottom:8px;}
 
   .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:11px 18px; border-radius:12px; font-size:14px; z-index:100; box-shadow:0 8px 30px rgba(0,0,0,.2); max-width:calc(100% - 32px);}
   .toast.err{background:var(--red);}
@@ -203,6 +199,8 @@
     .canvas{padding:16px;}
     .title-input{font-size:24px;}
   }
+#fBody img { cursor: pointer; }
+#fBody img[alt=""], #fBody img:not([alt]) { outline: 2px dashed #C00022; outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -212,7 +210,7 @@
   <form class="login-card" id="loginForm">
     <img src="assets/pfx-dark.png" alt="PFX">
     <h1>Sign in</h1>
-    <p>PFX internal tools: blog, documents and forms.</p>
+    <p>PFX internal tools: blog and website editing.</p>
     <div class="field">
       <label for="loginEmail">Email</label>
       <input type="email" id="loginEmail" autocomplete="username" required>
@@ -232,9 +230,6 @@
     <div class="brand"><img src="assets/pfx-light.png" alt="PFX"><span>Internal</span></div>
     <button class="nav-item active" data-section="blog">Blog</button>
     <button class="nav-item" data-section="website">Website</button>
-    <button class="nav-item" data-section="documents">Documents <small>Soon</small></button>
-    <button class="nav-item" data-section="forms">Forms <small>Soon</small></button>
-    <button class="nav-item" data-section="social">Social <small>Soon</small></button>
     <div class="spacer"></div>
     <div class="who" id="whoAmI"></div>
     <button class="nav-item signout" id="signOutBtn">Sign out</button>
@@ -302,6 +297,7 @@
           </div>
           <input type="file" id="bodyImgInput" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
           <div class="body" id="fBody" contenteditable="true"></div>
+          <div class="hint">Click an image in the post to add or change its alt text. Images without alt text have a red outline.</div>
         </div>
 
         <aside class="panel">
@@ -314,13 +310,29 @@
           <div class="field">
             <div class="row-label"><label for="fSlug">Web address</label><button type="button" class="link-btn" id="genSlug">From title</button></div>
             <input type="text" id="fSlug" placeholder="e.g. indoor-vs-outdoor-kiosk">
-            <div class="hint">Opens at poweredbypfx.com/post?p=<b id="slugEcho">…</b></div>
+            <div class="hint">Opens at poweredbypfx.com/posts/<b id="slugEcho">…</b></div>
           </div>
           <div class="field">
             <label for="fDesc">Summary</label>
-            <textarea id="fDesc" placeholder="One or two sentences. Shown on the blog card and in Google."></textarea>
+            <textarea id="fDesc" placeholder="One or two sentences. Shown on the blog card and at the top of the post."></textarea>
+          </div>
+          <div class="field" id="altField" hidden>
+            <label for="fImageAlt">Cover image alt text</label>
+            <input type="text" id="fImageAlt" maxlength="200" placeholder="e.g. PFX outdoor pizza kiosk at a gas station at night">
+            <div class="hint">Describe what's in the image in one short sentence.</div>
+          </div>
+          <div class="field">
+            <label for="fSeoTitle">SEO title</label>
+            <input type="text" id="fSeoTitle" maxlength="120">
+            <div class="hint">Shown in Google. Leave blank to use the post title.</div>
+            <div class="counter" id="seoTitleCount"></div>
+          </div>
+          <div class="field">
+            <label for="fSeoDesc">Meta description</label>
+            <textarea id="fSeoDesc" maxlength="320" placeholder="Leave blank to use the summary."></textarea>
             <div class="counter" id="descCount"></div>
           </div>
+          <div class="msg err" id="altWarn" hidden></div>
           <div class="field">
             <label for="fTags">Tags</label>
             <input type="text" id="fTags" placeholder="e.g. ROI, Licensee">
@@ -370,19 +382,6 @@
       <div id="wsForm"><div class="empty">Loading…</div></div>
     </section>
 
-    <!-- ----- coming soon sections ----- -->
-    <section data-view="documents" hidden>
-      <div class="page-top"><div><h1>Documents</h1><p>Legal documents on PFX letterhead.</p></div></div>
-      <div class="soon"><h2>Coming next</h2><p>Paste your wording and get it on PFX letterhead, ready to download as PDF or Word, or save to Dropbox.</p></div>
-    </section>
-    <section data-view="forms" hidden>
-      <div class="page-top"><div><h1>Forms</h1><p>Forms with fields, legal text and signatures.</p></div></div>
-      <div class="soon"><h2>Coming next</h2><p>List the fields you want (first name, phone, email, signature…) and get a finished PFX form, with legal text and signature blocks if you need them.</p></div>
-    </section>
-    <section data-view="social" hidden>
-      <div class="page-top"><div><h1>Social</h1><p>Instagram posts made with Claude.</p></div></div>
-      <div class="soon"><h2>Coming later</h2><p>Describe a post and Claude writes the caption and lays out a branded 1080×1080 graphic, ready to download.</p></div>
-    </section>
   </main>
 </div>
 
@@ -427,6 +426,7 @@
     if (/row-level security|permission denied|not authorized/i.test(m)) return 'Your login isn\'t on the PFX team list yet. Add your email to the team table in Supabase (see supabase/setup.sql).';
     if (/duplicate key|already exists|23505/i.test(m)) return 'Another post already uses that web address. Change it and try again.';
     if (/Could not find the table|PGRST205|relation .* does not exist/i.test(m)) return 'The database isn\'t set up yet. Run supabase/setup.sql in the Supabase SQL Editor.';
+    if (/image_alt|seo_title|seo_description/i.test(m)) return 'The new blog fields aren\'t set up yet. Run supabase/blog-seo.sql in the Supabase SQL Editor.';
     if (/Bucket not found/i.test(m)) return 'The image storage isn\'t set up yet. Run supabase/setup.sql in the Supabase SQL Editor.';
     if (/Invalid login credentials/i.test(m)) return 'That email and password don\'t match. Check them and try again.';
     if (/Email not confirmed/i.test(m)) return 'This email hasn\'t been confirmed yet. In Supabase, open Authentication → Users and confirm it.';
@@ -522,7 +522,7 @@
           (p.updated_by ? '<span>Edited by ' + esc(p.updated_by) + '</span>' : '') +
         '</div></div>' +
         '<div class="actions">' +
-          (p.status === 'published' ? '<a class="btn btn-sm btn-ghost" href="' + SITE + '/post?p=' + encodeURIComponent(p.slug) + '" target="_blank" rel="noopener">View ↗</a>' : '') +
+          (p.status === 'published' ? '<a class="btn btn-sm btn-ghost" href="' + SITE + '/posts/' + encodeURIComponent(p.slug) + '" target="_blank" rel="noopener">View ↗</a>' : '') +
           '<button class="btn btn-sm" data-edit="' + i + '">Edit</button>' +
         '</div></div>';
     }).join('');
@@ -551,6 +551,7 @@
   var dirty = false;
   var slugTouched = false;
   var fTitle = $('fTitle'), fSlug = $('fSlug'), fDesc = $('fDesc'), fTags = $('fTags'), fAuthor = $('fAuthor'), fDate = $('fDate'), fBody = $('fBody');
+  var fImageAlt = $('fImageAlt'), fSeoTitle = $('fSeoTitle'), fSeoDesc = $('fSeoDesc');
 
   window.addEventListener('beforeunload', function (e) { if (dirty || window.PFXWebsite.dirty()) { e.preventDefault(); e.returnValue = ''; } });
 
@@ -558,7 +559,7 @@
     $('blogList').hidden = true; $('blogEditor').hidden = false; window.scrollTo(0, 0);
     setMsg('');
     if (!id) {
-      fill({ id: null, slug: '', title: '', excerpt: '', body: '', image: null, author: 'PFX Team', tags: [], date: today(), status: 'draft' });
+      fill({ id: null, slug: '', title: '', excerpt: '', body: '', image: null, image_alt: '', seo_title: '', seo_description: '', author: 'PFX Team', tags: [], date: today(), status: 'draft' });
       fTitle.focus();
       return;
     }
@@ -572,12 +573,15 @@
   function fill(p) {
     current = p;
     var disabled = !p;
-    [fTitle, fSlug, fDesc, fTags, fAuthor, fDate].forEach(function (el) { el.disabled = disabled; });
+    [fTitle, fSlug, fDesc, fImageAlt, fSeoTitle, fSeoDesc, fTags, fAuthor, fDate].forEach(function (el) { el.disabled = disabled; });
     fBody.contentEditable = disabled ? 'false' : 'true';
     if (!p) return;
     fTitle.value = p.title || ''; autoGrow();
     fSlug.value = p.slug || ''; slugTouched = !!p.slug;
     fDesc.value = p.excerpt || '';
+    fImageAlt.value = p.image_alt || '';
+    fSeoTitle.value = p.seo_title || '';
+    fSeoDesc.value = p.seo_description || '';
     fTags.value = (p.tags || []).join(', ');
     fAuthor.value = p.author || '';
     fDate.value = p.date || today();
@@ -596,16 +600,24 @@
     $('saveBtn').textContent = live ? 'Save' : 'Save draft';
     $('unpublishBtn').hidden = !live;
     $('viewLiveBtn').hidden = !live;
-    $('viewLiveBtn').href = SITE + '/post?p=' + encodeURIComponent(p.slug || '');
+    $('viewLiveBtn').href = SITE + '/posts/' + encodeURIComponent(p.slug || '');
     $('deleteBtn').hidden = !p.id;
     var slug = fSlug.value || 'your-post';
     $('slugEcho').textContent = slug;
-    $('serpUrl').textContent = 'poweredbypfx.com › post?p=' + slug;
-    $('serpTitle').textContent = (fTitle.value || 'Your post title') + ' | PFX Blog';
-    $('serpDesc').textContent = fDesc.value || 'Your summary will show here.';
-    var n = fDesc.value.length, c = $('descCount');
+    var seoTitle = fSeoTitle.value.trim() || (fTitle.value || 'Your post title') + ' | PFX Blog';
+    var seoDesc = fSeoDesc.value.trim() || fDesc.value.trim();
+    $('serpUrl').textContent = 'poweredbypfx.com › posts › ' + slug;
+    $('serpTitle').textContent = seoTitle;
+    $('serpDesc').textContent = seoDesc || 'Your description will show here.';
+    var tn = seoTitle.length, tc = $('seoTitleCount');
+    tc.textContent = tn + ' characters' + (tn > 60 ? ' (Google cuts off around 60)' : ' (good length)');
+    tc.className = 'counter ' + (tn > 60 ? 'warn' : 'good');
+    var n = seoDesc.length, c = $('descCount');
     c.textContent = n ? n + ' characters' + (n < 100 ? ' (a bit short for Google, aim for 120–156)' : n > 160 ? ' (Google cuts off around 156)' : ' (good length)') : '';
     c.className = 'counter ' + (n === 0 ? '' : (n < 100 || n > 160) ? 'warn' : 'good');
+    var noAlt = fBody.querySelectorAll('img:not([alt]), img[alt=""]').length + (coverUrl && !fImageAlt.value.trim() ? 1 : 0);
+    $('altWarn').hidden = !noAlt;
+    $('altWarn').textContent = noAlt + (noAlt === 1 ? ' image needs' : ' images need') + ' alt text.';
     renderTagChips();
   }
   function markDirty() { dirty = true; $('savedHint').textContent = 'Unsaved changes'; refreshMeta(); }
@@ -620,7 +632,7 @@
   fSlug.addEventListener('input', function () { slugTouched = true; markDirty(); });
   fSlug.addEventListener('blur', function () { fSlug.value = slugify(fSlug.value); refreshMeta(); });
   $('genSlug').addEventListener('click', function () { slugTouched = false; fSlug.value = slugify(fTitle.value); markDirty(); });
-  [fDesc, fTags, fAuthor, fDate].forEach(function (el) { el.addEventListener('input', markDirty); });
+  [fDesc, fImageAlt, fSeoTitle, fSeoDesc, fTags, fAuthor, fDate].forEach(function (el) { el.addEventListener('input', markDirty); });
   fBody.addEventListener('input', markDirty);
 
   function parseTags() { return fTags.value.split(',').map(function (t) { return t.trim(); }).filter(Boolean).filter(function (t, i, a) { return a.indexOf(t) === i; }); }
@@ -642,11 +654,12 @@
     $('cover').classList.toggle('has', !!coverUrl);
     $('coverImg').hidden = !coverUrl; $('coverActions').hidden = !coverUrl; $('coverHint').hidden = !!coverUrl;
     $('coverImg').src = coverUrl ? imgUrl(coverUrl) : '';
+    $('altField').hidden = !coverUrl;
   }
   $('cover').addEventListener('click', function (e) { if (!coverUrl && !e.target.closest('button')) $('coverInput').click(); });
   $('cover').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !coverUrl) { e.preventDefault(); $('coverInput').click(); } });
   $('coverChange').addEventListener('click', function () { $('coverInput').click(); });
-  $('coverRemove').addEventListener('click', function () { setCover(null); markDirty(); });
+  $('coverRemove').addEventListener('click', function () { setCover(null); fImageAlt.value = ''; markDirty(); });
   $('coverInput').addEventListener('change', function () {
     var file = this.files[0]; this.value = '';
     if (!file) return;
@@ -707,8 +720,19 @@
     if (!file) return;
     toast('Uploading image…');
     uploadImage(file, 'body').then(function (url) {
-      restoreSelection(); document.execCommand('insertImage', false, url); markDirty(); toast('Image added.');
+      var alt = prompt(ALT_PROMPT, '') || '';
+      restoreSelection();
+      document.execCommand('insertHTML', false, '<img src="' + esc(url) + '" alt="' + esc(alt.trim()) + '">');
+      markDirty(); toast('Image added.');
     }).catch(function (err) { toast(friendlyError(err), true); });
+  });
+  var ALT_PROMPT = 'Alt text: describe what\'s in this image in one short sentence.';
+  fBody.addEventListener('click', function (e) {
+    if (e.target.tagName !== 'IMG') return;
+    var alt = prompt(ALT_PROMPT, e.target.getAttribute('alt') || '');
+    if (alt === null) return;
+    e.target.setAttribute('alt', alt.trim());
+    markDirty();
   });
   // Pasting from Word, Google Docs or a website keeps headings, lists, bold and links but drops their styling.
   fBody.addEventListener('paste', function (e) {
@@ -763,6 +787,9 @@
       excerpt: fDesc.value.trim(),
       body: sanitize(fBody.innerHTML),
       image: coverUrl,
+      image_alt: coverUrl ? fImageAlt.value.trim() : '',
+      seo_title: fSeoTitle.value.trim(),
+      seo_description: fSeoDesc.value.trim(),
       author: fAuthor.value.trim() || 'PFX Team',
       tags: parseTags(),
       date: fDate.value || today(),
@@ -785,21 +812,31 @@
     var miss = missingFor(row, status === 'published');
     if (miss.length) { setMsg('To ' + (status === 'published' ? 'publish' : 'save') + ', add ' + miss.join(', ') + '.', 'err'); return Promise.reject('incomplete'); }
     if (current.id && current.status === 'published' && current.slug !== row.slug &&
-        !confirm('This post is live at /post?p=' + current.slug + '. Changing the web address will break links to the old one. Continue?')) {
+        !confirm('This post is live at /posts/' + current.slug + '. Changing the web address will break links to the old one. Continue?')) {
       return Promise.reject('cancelled');
     }
     fSlug.value = row.slug;
+    var onSite = status === 'published' || current.status === 'published';
     setBusy(true);
     var q = current.id ? sb.from('posts').update(row).eq('id', current.id).select().single()
                        : sb.from('posts').insert(row).select().single();
     return q.then(function (res) {
       if (res.error) throw res.error;
       fill(res.data);
-      setMsg(doneText, 'ok');
-      return res.data;
+      if (!onSite) { setMsg(doneText, 'ok'); return res.data; }
+      return rebuildSite(doneText).then(function () { return res.data; });
     }).catch(function (err) {
       setMsg(friendlyError(err), 'err'); throw err;
     }).finally(function () { setBusy(false); });
+  }
+  // Each post has its own built page, so changes to live posts need a website rebuild.
+  function rebuildSite(doneText) {
+    return sb.functions.invoke('publish-site').then(function (res) {
+      if (res.error) throw res.error;
+      setMsg(doneText, 'ok');
+    }).catch(function (err) {
+      setMsg('Saved, but the website didn\'t rebuild, so the post\'s page isn\'t up to date yet. Save again to retry. (' + err.message + ')', 'err');
+    });
   }
   function setBusy(b) { ['saveBtn', 'publishBtn', 'previewBtn', 'unpublishBtn', 'deleteBtn'].forEach(function (id) { $(id).disabled = b; }); }
   function noop() {}
@@ -807,24 +844,26 @@
   $('saveBtn').addEventListener('click', function () {
     // Saving a live post as a draft would take it off the site, so "Save" keeps a live post live.
     var keepLive = current && current.status === 'published';
-    save(keepLive ? 'published' : 'draft', keepLive ? 'Saved. The live post is updated.' : 'Draft saved. Only your team can see it.').catch(noop);
+    save(keepLive ? 'published' : 'draft', keepLive ? 'Saved. The website updates in about 2 minutes.' : 'Draft saved. Only your team can see it.').catch(noop);
   });
   $('publishBtn').addEventListener('click', function () {
     var wasLive = current && current.status === 'published';
-    save('published', wasLive ? 'Updated. The change is live on the website now.' : 'Published! It\'s on poweredbypfx.com/blog now.').then(function (p) {
+    save('published', wasLive ? 'Updated. The website updates in about 2 minutes.' : 'Published! It\'s on poweredbypfx.com/blog now, and the full update takes about 2 minutes.').then(function (p) {
       if (p) toast(wasLive ? 'Live post updated.' : 'Post published.');
     }).catch(noop);
   });
   $('unpublishBtn').addEventListener('click', function () {
     if (!confirm('Take this post off the website? It stays here as a draft.')) return;
-    save('draft', 'Unpublished. It\'s off the website and saved as a draft.').catch(noop);
+    save('draft', 'Unpublished. It\'s saved as a draft and leaves the website in about 2 minutes.').catch(noop);
   });
   $('deleteBtn').addEventListener('click', function () {
     if (!current || !current.id) return;
     if (!confirm('Delete "' + (current.title || 'this post') + '" for good? This can\'t be undone.')) return;
+    var wasLive = current.status === 'published';
     setBusy(true);
     sb.from('posts').delete().eq('id', current.id).then(function (res) {
       if (res.error) throw res.error;
+      if (wasLive) sb.functions.invoke('publish-site');
       dirty = false; toast('Post deleted.'); backToList(true);
     }).catch(function (err) { setMsg(friendlyError(err), 'err'); }).finally(function () { setBusy(false); });
   });
@@ -834,7 +873,7 @@
     var pv = document.createElement('div');
     pv.className = 'pv';
     pv.innerHTML = '<div class="pv-card"><div class="pv-top"><span>Preview, not published</span><button class="btn btn-sm" type="button">Close</button></div>' +
-      (row.image ? '<img alt="" src="' + esc(imgUrl(row.image)) + '">' : '') +
+      (row.image ? '<img alt="' + esc(row.image_alt) + '" src="' + esc(imgUrl(row.image)) + '">' : '') +
       '<h1>' + esc(row.title || 'Untitled post') + '</h1><p class="lede">' + esc(row.excerpt) + '</p><div class="body">' + row.body + '</div></div>';
     function close() { pv.remove(); }
     pv.querySelector('button').addEventListener('click', close);
