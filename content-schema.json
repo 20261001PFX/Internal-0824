@@ -1,0 +1,2254 @@
+{
+ "pages": [
+  {
+   "page": "home",
+   "title": "Home page",
+   "path": "/",
+   "entries": [
+    {
+     "label": "Hero: Headline line 1",
+     "max": 24,
+     "key": "hero.line1",
+     "type": "text",
+     "default": "Your Pizzeria"
+    },
+    {
+     "label": "Hero: Headline line 2",
+     "max": 24,
+     "key": "hero.line2",
+     "type": "text",
+     "default": "Now Automated."
+    },
+    {
+     "label": "Hero: Badge",
+     "max": 48,
+     "key": "hero.badge",
+     "type": "text",
+     "default": "500K+ Pizzas Served in Under a Year"
+    },
+    {
+     "label": "Hero: Paragraph",
+     "max": 190,
+     "key": "hero.sub",
+     "type": "text",
+     "default": "PFX gives independent operators, regional chains, and franchisors a white-label pizza vending platform, your recipes, your brand, your pricing, 24/7."
+    },
+    {
+     "key": "hero.link_url",
+     "type": "link",
+     "max": null,
+     "label": "Hero: Second button link",
+     "default": "/kiosk-outdoor"
+    },
+    {
+     "label": "Hero: Second button text",
+     "max": 24,
+     "key": "hero.link_text",
+     "type": "text",
+     "default": "Explore Kiosks"
+    },
+    {
+     "label": "USPs: Small label",
+     "max": 40,
+     "key": "usp.eyebrow",
+     "type": "text",
+     "default": "Your Brand. Your Business"
+    },
+    {
+     "label": "USPs: Heading",
+     "max": 60,
+     "key": "usp.title",
+     "type": "text",
+     "default": "Complete Control of Your Brand"
+    },
+    {
+     "label": "USPs: Paragraph",
+     "max": 220,
+     "key": "usp.body",
+     "type": "text",
+     "default": "Unlike franchise programs, you own the equipment and keep full control. We’re built for Independent Operators, Regional Chains, Franchisors, and even Convenience Stores."
+    },
+    {
+     "label": "USPs: Cards",
+     "max": null,
+     "key": "usp.cards",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 34
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 90
+      }
+     ],
+     "min": 2,
+     "maxItems": 8,
+     "default": [
+      {
+       "title": "Commercial Grade",
+       "text": "NAMA & UL Certified, Built to Last"
+      },
+      {
+       "title": "Your Branding",
+       "text": "Full Custom Wrap With Your Colors, Logo, and Messaging."
+      },
+      {
+       "title": "No Franchise Fees",
+       "text": "Buy the Equipment, Keep the Profits."
+      },
+      {
+       "title": "Customised Recipe Testing",
+       "text": "Your Pizzas are Tested to Ensure Perfect Baking And Customer Satisfaction."
+      },
+      {
+       "title": "Your Recipes & Ingredients",
+       "text": "Your Dough, Sauce, Cheese, Toppings, Completely Made By You."
+      },
+      {
+       "title": "Your Pricing & Menu",
+       "text": "Set Prices, Run Seasonal Specials, Update Remotely."
+      },
+      {
+       "title": "Your Operations",
+       "text": "You Prep, Stock, And Manage On Your Schedule, No Third Party Involvement."
+      },
+      {
+       "title": "Product Integrity",
+       "text": "Your Ingredients, Your Standards."
+      }
+     ]
+    },
+    {
+     "label": "What's Included: Heading",
+     "max": 40,
+     "key": "included.title",
+     "type": "text",
+     "default": "What’s Included?"
+    },
+    {
+     "label": "What's Included: Paragraph",
+     "max": 140,
+     "key": "included.body",
+     "type": "text",
+     "default": "From setup to seamless operation, we’ve got you covered every step of the way."
+    },
+    {
+     "label": "What's Included: Cards",
+     "max": null,
+     "key": "included.cards",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 34
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 90
+      }
+     ],
+     "min": 2,
+     "maxItems": 4,
+     "default": [
+      {
+       "title": "Turnkey Services",
+       "text": "Turnkey Install + Training, Extended Service Plans, Unit Customization."
+      },
+      {
+       "title": "Technical Support",
+       "text": "24/7 Helpline and Remote Monitoring."
+      },
+      {
+       "title": "Equipment Warranty",
+       "text": "1 Year Parts & Labor."
+      },
+      {
+       "title": "Software & Updates",
+       "text": "Cloud-Based Management, Remote Updates, and Insights."
+      }
+     ]
+    },
+    {
+     "label": "Indoor kiosk section: Heading",
+     "max": 48,
+     "key": "indoor.title",
+     "type": "text",
+     "default": "Bring Your Pizzeria Into Any Space."
+    },
+    {
+     "label": "Indoor kiosk section: Badge",
+     "max": 44,
+     "key": "indoor.badge",
+     "type": "text",
+     "default": "Built for Universities, Offices & Hospitals"
+    },
+    {
+     "label": "Indoor kiosk section: Paragraph",
+     "max": 200,
+     "key": "indoor.sub",
+     "type": "text",
+     "default": "The Indoor Kiosk is a sleek, freestanding unit built for high-traffic indoor spaces like universities, workplaces, and hospitals, with a 32″ touchscreen and campus meal plan payments."
+    },
+    {
+     "label": "ATM kiosk section: Heading",
+     "max": 48,
+     "key": "atm.title",
+     "type": "text",
+     "default": "A Pizzeria in a Fraction of the Space."
+    },
+    {
+     "label": "ATM kiosk section: Badge",
+     "max": 44,
+     "key": "atm.badge",
+     "type": "text",
+     "default": "All-Weather Kiosks"
+    },
+    {
+     "label": "ATM kiosk section: Paragraph",
+     "max": 200,
+     "key": "atm.sub",
+     "type": "text",
+     "default": "The ATM Kiosk is recessed into a building’s exterior, so customers order from outside while you restock from inside. Ready in under 5 minutes, open 24/7."
+    },
+    {
+     "key": "form.show",
+     "type": "toggle",
+     "max": null,
+     "label": "Form: Show the inquiry form on the home page",
+     "default": true
+    },
+    {
+     "label": "FAQs: Heading",
+     "max": 30,
+     "key": "faq.title",
+     "type": "text",
+     "default": "FAQ’s"
+    },
+    {
+     "label": "FAQs: Subheading",
+     "max": 80,
+     "key": "faq.sub",
+     "type": "text",
+     "default": "Read Through Some of Our Frequently Asked Questions"
+    },
+    {
+     "label": "FAQs: Questions",
+     "max": null,
+     "key": "faq.items",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "q",
+       "label": "Question",
+       "type": "text",
+       "max": 90
+      },
+      {
+       "key": "a",
+       "label": "Answer",
+       "type": "rich",
+       "max": null
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "q": "What is PFX?",
+       "a": "PFX is a white-label pizza vending platform — automated kiosks that let operators, regional chains, and franchisors sell their own recipes under their own brand, 24/7, without the overhead of a traditional storefront."
+      },
+      {
+       "q": "How Do PFX Kiosks Work?",
+       "a": "Fresh pizzas are prepped and loaded into the kiosk, which stores, bakes, and dispenses each order on demand through a self-serve touchscreen and payment terminal — typically ready in under 5 minutes."
+      },
+      {
+       "q": "How Does PFX Ensure Pizza Quality?",
+       "a": "Because you supply your own dough, sauce, cheese, and toppings, every pizza reflects your own recipes and standards. Each kiosk is also temperature- and freshness-monitored to keep ingredients within safe, high-quality ranges."
+      },
+      {
+       "q": "How Are The Kiosks Cleaned And Maintained?",
+       "a": "Operators handle routine daily cleaning and restocking, while PFX backs every kiosk with a 1-year parts & labor warranty, remote monitoring, and a 24/7 technical support helpline."
+      },
+      {
+       "q": "Is The Inside Of The Machine Clean?",
+       "a": "Pizzas never come into contact with the inside of the machine during loading, baking, or serving—they’re baked directly in the box they arrive in. Our units are NAMA approved for sanitary food vending, and both the interior and exterior of every PizzaForno machine are cleaned regularly."
+      },
+      {
+       "q": "How Does The Machine Keep Pizzas Fresh?",
+       "a": "Once a pizza is inserted into the machine, an automated system tracks the ‘best before’ dates of all pizzas to ensure food quality and safety. Using a first-in, first-out approach, it prioritizes freshness and automatically removes any pizzas past their shelf life from the available inventory, ensuring customers receive only fresh products."
+      },
+      {
+       "q": "What is the ROI On These Kiosks?",
+       "a": "Returns vary by location, foot traffic, and pricing — use our [ROI Calculator](/roicalculator) to model projected earnings, payback period, and lifetime ROI for your specific setup."
+      },
+      {
+       "q": "How Long Does It Take To Fulfil An Order?",
+       "a": "As each kiosk is custom-built to order, the minimum lead time for fulfilment is approximately 3 weeks. This allows us the time needed to manufacture and prepare your kiosk before delivery."
+      },
+      {
+       "q": "PFX or PizzaForno?",
+       "a": "PFX is the white-label automation platform and hardware, powered by PizzaForno's technology. PizzaForno is the original consumer-facing brand; PFX lets you run the same technology entirely under your own brand."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "testimonials",
+   "title": "Testimonials",
+   "path": "/testimonials",
+   "entries": [
+    {
+     "label": "Top quote: Line 1",
+     "max": 70,
+     "key": "pull.line1",
+     "type": "text",
+     "default": "“The best way to have more sales is to carry on selling"
+    },
+    {
+     "label": "Top quote: Line 2",
+     "max": 70,
+     "key": "pull.line2",
+     "type": "text",
+     "default": "through the night when you’re closed. It’s like having"
+    },
+    {
+     "label": "Top quote: Line 3",
+     "max": 70,
+     "key": "pull.line3",
+     "type": "text",
+     "default": "another restaurant, but not actually having to be there.”"
+    },
+    {
+     "label": "Top quote: Name",
+     "max": 40,
+     "key": "pull.name",
+     "type": "text",
+     "default": "Antoine Attard"
+    },
+    {
+     "label": "Top quote: Role",
+     "max": 60,
+     "key": "pull.role",
+     "type": "text",
+     "default": "Owner of Pizza 13, PFX Operator"
+    },
+    {
+     "label": "Operators",
+     "max": null,
+     "key": "operators",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "name",
+       "label": "Operator name",
+       "type": "text",
+       "max": 40
+      },
+      {
+       "key": "summary",
+       "label": "Summary",
+       "type": "text",
+       "max": 180
+      },
+      {
+       "key": "person",
+       "label": "Person",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "role",
+       "label": "Their role",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "instagram",
+       "label": "Instagram handle (no @)",
+       "type": "text",
+       "max": null
+      },
+      {
+       "key": "youtube",
+       "label": "YouTube link",
+       "type": "link",
+       "max": null
+      },
+      {
+       "key": "video_title",
+       "label": "Video title",
+       "type": "text",
+       "max": null
+      },
+      {
+       "key": "since",
+       "label": "Since",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "kiosk",
+       "label": "Kiosk",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "location",
+       "label": "Location",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "map",
+       "label": "Google Maps link",
+       "type": "link",
+       "max": null
+      },
+      {
+       "key": "address",
+       "label": "Street address",
+       "type": "text",
+       "max": 80
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "name": "Pizza 13",
+       "summary": "Our first white-label licensee: its own brand on the wrap and its own recipes in the kiosk, baked around the clock.",
+       "person": "Antoine Attard",
+       "role": "Pizza 13",
+       "instagram": "p13.bathurst",
+       "youtube": "STCAMJAnbsk",
+       "video_title": "How Pizza13 Expanded Their Pizzeria with a 24/7 PFX Vending Machine",
+       "since": "July 2025",
+       "kiosk": "Outdoor Kiosk",
+       "location": "Bathurst, New Brunswick, Canada",
+       "map": "https://www.google.com/maps/search/?api=1&query=325%20Murray%20Avenue%2C%20Bathurst%2C%20NB%2C%20Canada",
+       "address": "325 Murray Avenue, Bathurst, NB, Canada"
+      },
+      {
+       "name": "Speedy Pie",
+       "summary": "An Outdoor Kiosk busy enough that it was being restocked four times a day.",
+       "person": "David & Savannah Necker",
+       "role": "Owners, Speedy Pie",
+       "instagram": "speedypiepizza",
+       "youtube": "rpFps0Y71wo",
+       "video_title": "They Were Restocking This Pizza Vending Machine 4 Times a Day!",
+       "since": "August 2026",
+       "kiosk": "Outdoor Kiosk",
+       "location": "Quad Cities, USA",
+       "map": "https://www.google.com/maps/search/?api=1&query=5181%20Competition%20Dr%2C%20Bettendorf%2C%20IA%2052722%2C%20United%20States",
+       "address": "5181 Competition Dr, Bettendorf, IA 52722, United States"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "kiosk-outdoor",
+   "title": "Outdoor Kiosk",
+   "path": "/kiosk-outdoor",
+   "entries": [
+    {
+     "label": "Top: Small label",
+     "max": 40,
+     "key": "hero.eyebrow",
+     "type": "text",
+     "default": "Outdoor Kiosk"
+    },
+    {
+     "label": "Top: Headline",
+     "max": 70,
+     "key": "hero.title",
+     "type": "text",
+     "default": "A 24/7 Pizzeria That Stands On Its Own."
+    },
+    {
+     "label": "Top: Paragraph",
+     "max": 200,
+     "key": "hero.lede",
+     "type": "text",
+     "default": "A freestanding, weatherproof kiosk that bakes and serves your pizzas around the clock, in about the space of a parking spot."
+    },
+    {
+     "label": "Top: Quick facts",
+     "max": null,
+     "key": "hero.facts",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 20
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 30
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Capacity",
+       "value": "70 Pizzas"
+      },
+      {
+       "label": "Ready In",
+       "value": "3–4 Minutes"
+      },
+      {
+       "label": "Footprint",
+       "value": "10'8\" × 8'0\""
+      }
+     ]
+    },
+    {
+     "label": "Why The Outdoor Kiosk: Heading",
+     "max": 50,
+     "key": "row1.title",
+     "type": "text",
+     "default": "Why The Outdoor Kiosk"
+    },
+    {
+     "label": "Why The Outdoor Kiosk: Subheading",
+     "max": 110,
+     "key": "row1.sub",
+     "type": "text",
+     "default": "Built to stand anywhere, in any weather."
+    },
+    {
+     "label": "Why this kiosk: Cards",
+     "max": null,
+     "key": "why",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 2,
+     "maxItems": 6,
+     "default": [
+      {
+       "title": "Built For Every Season",
+       "text": "A robust 8×10 container with weather-resistant aluminium paneling, epoxy anti-rust protection, heat insulation and a baseboard heater."
+      },
+      {
+       "title": "Seen Day And Night",
+       "text": "Your full graphic wrap, photocell-controlled exterior lighting and a roof-mounted sign with tubed LED lighting."
+      },
+      {
+       "title": "Restocked From Inside",
+       "text": "A walk-in interior with waterproof walls and ceiling, motion-sensing lights and an exhaust fan, so restocking stays out of sight."
+      },
+      {
+       "title": "Drops Into A Parking Spot",
+       "text": "Freestanding on any level surface. It needs a 208–240V supply and a 4G signal, nothing more."
+      }
+     ]
+    },
+    {
+     "label": "How It Works: Heading",
+     "max": 50,
+     "key": "row2.title",
+     "type": "text",
+     "default": "How It Works"
+    },
+    {
+     "label": "How It Works: Subheading",
+     "max": 110,
+     "key": "row2.sub",
+     "type": "text",
+     "default": "From tap to hot pizza in minutes."
+    },
+    {
+     "label": "How it works: Steps",
+     "max": null,
+     "key": "steps",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "Tap",
+       "text": "Customers pick a pizza on the 32\" touchscreen and add coupon or loyalty codes."
+      },
+      {
+       "title": "Pay",
+       "text": "Cards, mobile wallets and NFC, plus campus meal plans."
+      },
+      {
+       "title": "Bake",
+       "text": "A robotic arm moves the pizza to a patented convection oven, where it bakes in its box."
+      },
+      {
+       "title": "Collect",
+       "text": "Out through the hatch in 3–4 minutes, with a disposable knife on the side."
+      }
+     ]
+    },
+    {
+     "label": "Built To Sell: Heading",
+     "max": 50,
+     "key": "row3.title",
+     "type": "text",
+     "default": "Built To Sell"
+    },
+    {
+     "label": "Built To Sell: Subheading",
+     "max": 110,
+     "key": "row3.sub",
+     "type": "text",
+     "default": "What every kiosk does for you."
+    },
+    {
+     "label": "Built to sell: Cards",
+     "max": null,
+     "key": "sell",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "Tap To Pay",
+       "text": "Cards, mobile wallets and NFC, plus campus meal plans, on the built-in terminal."
+      },
+      {
+       "title": "Ad Revenue On Screen",
+       "text": "Run ads on the 32\" touchscreen between orders: a second income from every kiosk."
+      },
+      {
+       "title": "Consistent Pizza, Every Time",
+       "text": "Bake time and temperature are set for each pizza, so every one comes out the same."
+      }
+     ]
+    },
+    {
+     "label": "Specifications: Heading",
+     "max": 50,
+     "key": "row4.title",
+     "type": "text",
+     "default": "Specifications"
+    },
+    {
+     "label": "Specifications: Subheading",
+     "max": 110,
+     "key": "row4.sub",
+     "type": "text",
+     "default": "Every Outdoor Kiosk, as standard."
+    },
+    {
+     "label": "Specifications",
+     "max": null,
+     "key": "specs",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 70
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Capacity",
+       "value": "70 Pizzas"
+      },
+      {
+       "label": "Ready In",
+       "value": "3–4 Minutes"
+      },
+      {
+       "label": "Dimensions",
+       "value": "10'8\" L × 8'0\" W × 8'7\" H"
+      },
+      {
+       "label": "Weight",
+       "value": "1,952 kg / 4,304 lbs"
+      },
+      {
+       "label": "Power",
+       "value": "208–240V 50A Single Phase With Neutral"
+      },
+      {
+       "label": "Service Access",
+       "value": "Front, Walk-In"
+      },
+      {
+       "label": "Exterior",
+       "value": "Weather-Resistant Aluminium Paneling"
+      },
+      {
+       "label": "Oven",
+       "value": "Pulsed-Air Convection"
+      },
+      {
+       "label": "Interface",
+       "value": "32\" Touchscreen"
+      },
+      {
+       "label": "Connectivity",
+       "value": "4G Cellular, Remote Monitoring"
+      },
+      {
+       "label": "Uptime",
+       "value": "99%"
+      },
+      {
+       "label": "Warranty",
+       "value": "2 Years"
+      }
+     ]
+    },
+    {
+     "label": "Standard Features: Heading",
+     "max": 50,
+     "key": "row5.title",
+     "type": "text",
+     "default": "Standard Features"
+    },
+    {
+     "label": "Standard Features: Subheading",
+     "max": 110,
+     "key": "row5.sub",
+     "type": "text",
+     "default": "On every unit."
+    },
+    {
+     "label": "Standard features",
+     "max": null,
+     "key": "features",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "text",
+       "label": "Feature",
+       "type": "text",
+       "max": 60
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "text": "Epoxy Anti-Rust Protection"
+      },
+      {
+       "text": "Checkered Entrance Plate"
+      },
+      {
+       "text": "Photocell-Controlled Exterior Lighting"
+      },
+      {
+       "text": "Roof-Mounted Sign With Tubed LED Lighting"
+      },
+      {
+       "text": "32\" Interactive Digital Interface"
+      },
+      {
+       "text": "Payment Terminal"
+      },
+      {
+       "text": "Accepts Campus Meal Plans"
+      },
+      {
+       "text": "Disposable Knife Dispenser"
+      },
+      {
+       "text": "IoT: 4G Cellular"
+      },
+      {
+       "text": "Pulsed-Air Convection Oven"
+      },
+      {
+       "text": "Tamper-Proof Locks"
+      },
+      {
+       "text": "Integrated Security Systems"
+      }
+     ]
+    },
+    {
+     "label": "Certified: Heading",
+     "max": 50,
+     "key": "row6.title",
+     "type": "text",
+     "default": "Certified"
+    },
+    {
+     "label": "Certified: Subheading",
+     "max": 110,
+     "key": "row6.sub",
+     "type": "text",
+     "default": "Industry-leading standards."
+    },
+    {
+     "label": "Certifications",
+     "max": null,
+     "key": "certs",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 40
+      },
+      {
+       "key": "covers",
+       "label": "What it covers",
+       "type": "text",
+       "max": 160
+      },
+      {
+       "key": "matters",
+       "label": "Why it matters",
+       "type": "text",
+       "max": 160
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "NAMA Listed",
+       "covers": "Sanitary design, food temperature control and FDA compliance.",
+       "matters": "Local health inspectors require it before they grant operating permits."
+      },
+      {
+       "title": "UL Certified",
+       "covers": "Electrical safety, fire risk mitigation and component reliability.",
+       "matters": "Building inspectors and insurance companies require it before the kiosk can be plugged into a commercial space."
+      }
+     ]
+    },
+    {
+     "label": "Pricing: Heading",
+     "max": 50,
+     "key": "row7.title",
+     "type": "text",
+     "default": "Pricing"
+    },
+    {
+     "label": "Pricing: Subheading",
+     "max": 110,
+     "key": "row7.sub",
+     "type": "text",
+     "default": "A one-time purchase. No franchise fees."
+    },
+    {
+     "label": "Pricing: Rows",
+     "max": null,
+     "key": "pricing",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 40
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Outdoor Kiosk"
+      },
+      {
+       "label": "Installation",
+       "value": "$2,999 USD"
+      },
+      {
+       "label": "Warranty",
+       "value": "2 Years, Included"
+      },
+      {
+       "label": "Franchise Fees",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "label": "From An Operator: Heading",
+     "max": 50,
+     "key": "row8.title",
+     "type": "text",
+     "default": "From An Operator"
+    },
+    {
+     "label": "From An Operator: Subheading",
+     "max": 110,
+     "key": "row8.sub",
+     "type": "text",
+     "default": "Pizza 13 runs an Outdoor Kiosk in Bathurst, New Brunswick."
+    },
+    {
+     "label": "From an operator: Quote",
+     "max": 220,
+     "key": "quote.text",
+     "type": "text",
+     "default": "“The best way to have more sales is to carry on selling through the night when you’re closed. It’s like having another restaurant, but not actually having to be there.”"
+    },
+    {
+     "label": "From an operator: Name",
+     "max": 40,
+     "key": "quote.name",
+     "type": "text",
+     "default": "Antoine Attard"
+    },
+    {
+     "label": "From an operator: Role",
+     "max": 60,
+     "key": "quote.role",
+     "type": "text",
+     "default": "Owner of Pizza 13, PFX Operator"
+    },
+    {
+     "label": "Compare The Kiosks: Heading",
+     "max": 50,
+     "key": "row9.title",
+     "type": "text",
+     "default": "Compare The Kiosks"
+    },
+    {
+     "label": "Compare The Kiosks: Subheading",
+     "max": 110,
+     "key": "row9.sub",
+     "type": "text",
+     "default": "Same pizzas and technology, three ways to place them."
+    },
+    {
+     "label": "Compare the kiosks: Rows",
+     "max": null,
+     "key": "compare",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Row label",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "a",
+       "label": "Outdoor",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "b",
+       "label": "Indoor",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "c",
+       "label": "ATM",
+       "type": "text",
+       "max": 60
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Best For",
+       "a": "Open-air sites, parking lots",
+       "b": "Lobbies, cafeterias, hospitals",
+       "c": "Building exteriors, storefronts"
+      },
+      {},
+      {
+       "label": "Dimensions",
+       "a": "10'8\" × 8'0\" × 8'7\"",
+       "b": "9'5\" × 4'5\" × 8'0\"",
+       "c": "8'0\" × 5'0\" × 8'0\""
+      },
+      {
+       "label": "Weight",
+       "a": "1,952 kg",
+       "b": "750 kg",
+       "c": "750 kg"
+      },
+      {
+       "label": "Power",
+       "a": "208–240V 50A",
+       "b": "208V 20A",
+       "c": "208V 20A"
+      },
+      {
+       "label": "Restocked From",
+       "a": "Inside the kiosk",
+       "b": "The side",
+       "c": "Inside the building"
+      },
+      {
+       "label": "Capacity",
+       "a": "70 pizzas",
+       "b": "70 pizzas",
+       "c": "70 pizzas"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "kiosk-indoor",
+   "title": "Indoor Kiosk",
+   "path": "/kiosk-indoor",
+   "entries": [
+    {
+     "label": "Top: Small label",
+     "max": 40,
+     "key": "hero.eyebrow",
+     "type": "text",
+     "default": "Indoor Kiosk"
+    },
+    {
+     "label": "Top: Headline",
+     "max": 70,
+     "key": "hero.title",
+     "type": "text",
+     "default": "A Pizzeria That Fits Your Lobby."
+    },
+    {
+     "label": "Top: Paragraph",
+     "max": 200,
+     "key": "hero.lede",
+     "type": "text",
+     "default": "A sleek, freestanding kiosk for busy indoor spaces. It bakes and serves your pizzas 24/7 in a footprint of just 9'5\" by 4'5\"."
+    },
+    {
+     "label": "Top: Quick facts",
+     "max": null,
+     "key": "hero.facts",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 20
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 30
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Capacity",
+       "value": "70 Pizzas"
+      },
+      {
+       "label": "Ready In",
+       "value": "3–4 Minutes"
+      },
+      {
+       "label": "Footprint",
+       "value": "9'5\" × 4'5\""
+      }
+     ]
+    },
+    {
+     "label": "Why The Indoor Kiosk: Heading",
+     "max": 50,
+     "key": "row1.title",
+     "type": "text",
+     "default": "Why The Indoor Kiosk"
+    },
+    {
+     "label": "Why The Indoor Kiosk: Subheading",
+     "max": 110,
+     "key": "row1.sub",
+     "type": "text",
+     "default": "Made for busy indoor spaces."
+    },
+    {
+     "label": "Why this kiosk: Cards",
+     "max": null,
+     "key": "why",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 2,
+     "maxItems": 6,
+     "default": [
+      {
+       "title": "A Small Footprint",
+       "text": "9'5\" by 4'5\" and 750 kg: it stands against a wall in a lobby, cafeteria or corridor."
+      },
+      {
+       "title": "A Window On The Robot",
+       "text": "A see-through window lets customers watch the robotic arm move their pizza to the oven."
+      },
+      {
+       "title": "Plugs Into A Standard Supply",
+       "text": "208V 20A single phase and a 120V receptacle, with service access from the side."
+      },
+      {
+       "title": "Built To Be Seen",
+       "text": "Robust 16-gauge carbon steel paneling with your full graphic wrap, and LED pot lights under the screen."
+      }
+     ]
+    },
+    {
+     "label": "How It Works: Heading",
+     "max": 50,
+     "key": "row2.title",
+     "type": "text",
+     "default": "How It Works"
+    },
+    {
+     "label": "How It Works: Subheading",
+     "max": 110,
+     "key": "row2.sub",
+     "type": "text",
+     "default": "From tap to hot pizza in minutes."
+    },
+    {
+     "label": "How it works: Steps",
+     "max": null,
+     "key": "steps",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "Tap",
+       "text": "Customers pick a pizza on the 32\" touchscreen and add coupon or loyalty codes."
+      },
+      {
+       "title": "Pay",
+       "text": "Cards, mobile wallets and NFC, plus campus meal plans."
+      },
+      {
+       "title": "Bake",
+       "text": "A robotic arm moves the pizza to a patented convection oven, where it bakes in its box."
+      },
+      {
+       "title": "Collect",
+       "text": "Out through the hatch in 3–4 minutes, with a disposable knife on the side."
+      }
+     ]
+    },
+    {
+     "label": "Built To Sell: Heading",
+     "max": 50,
+     "key": "row3.title",
+     "type": "text",
+     "default": "Built To Sell"
+    },
+    {
+     "label": "Built To Sell: Subheading",
+     "max": 110,
+     "key": "row3.sub",
+     "type": "text",
+     "default": "What every kiosk does for you."
+    },
+    {
+     "label": "Built to sell: Cards",
+     "max": null,
+     "key": "sell",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "Tap To Pay",
+       "text": "Cards, mobile wallets and NFC, plus campus meal plans, on the built-in terminal."
+      },
+      {
+       "title": "Ad Revenue On Screen",
+       "text": "Run ads on the 32\" touchscreen between orders: a second income from every kiosk."
+      },
+      {
+       "title": "Watch The Robot Work",
+       "text": "A see-through window lets customers watch the robotic arm make their pizza."
+      },
+      {
+       "title": "Consistent Pizza, Every Time",
+       "text": "Bake time and temperature are set for each pizza, so every one comes out the same."
+      }
+     ]
+    },
+    {
+     "label": "Specifications: Heading",
+     "max": 50,
+     "key": "row4.title",
+     "type": "text",
+     "default": "Specifications"
+    },
+    {
+     "label": "Specifications: Subheading",
+     "max": 110,
+     "key": "row4.sub",
+     "type": "text",
+     "default": "Every Indoor Kiosk, as standard."
+    },
+    {
+     "label": "Specifications",
+     "max": null,
+     "key": "specs",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 70
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Capacity",
+       "value": "70 Pizzas"
+      },
+      {
+       "label": "Ready In",
+       "value": "3–4 Minutes"
+      },
+      {
+       "label": "Dimensions",
+       "value": "9'5\" L × 4'5\" W × 8'0\" H"
+      },
+      {
+       "label": "Weight",
+       "value": "750 kg / 1,654 lbs"
+      },
+      {
+       "label": "Power",
+       "value": "208V 20A Single Phase, 120V Receptacle"
+      },
+      {
+       "label": "Service Access",
+       "value": "Side"
+      },
+      {
+       "label": "Exterior",
+       "value": "16-Gauge Carbon Steel Paneling"
+      },
+      {
+       "label": "Oven",
+       "value": "Pulsed-Air Convection"
+      },
+      {
+       "label": "Interface",
+       "value": "32\" Touchscreen"
+      },
+      {
+       "label": "Connectivity",
+       "value": "4G Cellular, Remote Monitoring"
+      },
+      {
+       "label": "Uptime",
+       "value": "99%"
+      },
+      {
+       "label": "Warranty",
+       "value": "2 Years"
+      }
+     ]
+    },
+    {
+     "label": "Standard Features: Heading",
+     "max": 50,
+     "key": "row5.title",
+     "type": "text",
+     "default": "Standard Features"
+    },
+    {
+     "label": "Standard Features: Subheading",
+     "max": 110,
+     "key": "row5.sub",
+     "type": "text",
+     "default": "On every unit."
+    },
+    {
+     "label": "Standard features",
+     "max": null,
+     "key": "features",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "text",
+       "label": "Feature",
+       "type": "text",
+       "max": 60
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "text": "LED Pot Lights"
+      },
+      {
+       "text": "Exterior See-Through Window"
+      },
+      {
+       "text": "32\" Interactive Digital Interface"
+      },
+      {
+       "text": "Payment Terminal"
+      },
+      {
+       "text": "Accepts Campus Meal Plans"
+      },
+      {
+       "text": "Disposable Knife Dispenser"
+      },
+      {
+       "text": "IoT: 4G Cellular"
+      },
+      {
+       "text": "Pulsed-Air Convection Oven"
+      },
+      {
+       "text": "Tamper-Proof Locks"
+      },
+      {
+       "text": "Integrated Security Systems"
+      }
+     ]
+    },
+    {
+     "label": "Certified: Heading",
+     "max": 50,
+     "key": "row6.title",
+     "type": "text",
+     "default": "Certified"
+    },
+    {
+     "label": "Certified: Subheading",
+     "max": 110,
+     "key": "row6.sub",
+     "type": "text",
+     "default": "Industry-leading standards."
+    },
+    {
+     "label": "Certifications",
+     "max": null,
+     "key": "certs",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 40
+      },
+      {
+       "key": "covers",
+       "label": "What it covers",
+       "type": "text",
+       "max": 160
+      },
+      {
+       "key": "matters",
+       "label": "Why it matters",
+       "type": "text",
+       "max": 160
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "NAMA Listed",
+       "covers": "Sanitary design, food temperature control and FDA compliance.",
+       "matters": "Local health inspectors require it before they grant operating permits."
+      },
+      {
+       "title": "UL Certified",
+       "covers": "Electrical safety, fire risk mitigation and component reliability.",
+       "matters": "Building inspectors and insurance companies require it before the kiosk can be plugged into a commercial space."
+      }
+     ]
+    },
+    {
+     "label": "Pricing: Heading",
+     "max": 50,
+     "key": "row7.title",
+     "type": "text",
+     "default": "Pricing"
+    },
+    {
+     "label": "Pricing: Subheading",
+     "max": 110,
+     "key": "row7.sub",
+     "type": "text",
+     "default": "A one-time purchase. No franchise fees."
+    },
+    {
+     "label": "Pricing: Rows",
+     "max": null,
+     "key": "pricing",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 40
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Indoor Kiosk"
+      },
+      {
+       "label": "Installation",
+       "value": "$2,999 USD"
+      },
+      {
+       "label": "Warranty",
+       "value": "2 Years, Included"
+      },
+      {
+       "label": "Franchise Fees",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "label": "Compare The Kiosks: Heading",
+     "max": 50,
+     "key": "row8.title",
+     "type": "text",
+     "default": "Compare The Kiosks"
+    },
+    {
+     "label": "Compare The Kiosks: Subheading",
+     "max": 110,
+     "key": "row8.sub",
+     "type": "text",
+     "default": "Same pizzas and technology, three ways to place them."
+    },
+    {
+     "label": "Compare the kiosks: Rows",
+     "max": null,
+     "key": "compare",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Row label",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "a",
+       "label": "Outdoor",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "b",
+       "label": "Indoor",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "c",
+       "label": "ATM",
+       "type": "text",
+       "max": 60
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Best For",
+       "a": "Open-air sites, parking lots",
+       "b": "Lobbies, cafeterias, hospitals",
+       "c": "Building exteriors, storefronts"
+      },
+      {},
+      {
+       "label": "Dimensions",
+       "a": "10'8\" × 8'0\" × 8'7\"",
+       "b": "9'5\" × 4'5\" × 8'0\"",
+       "c": "8'0\" × 5'0\" × 8'0\""
+      },
+      {
+       "label": "Weight",
+       "a": "1,952 kg",
+       "b": "750 kg",
+       "c": "750 kg"
+      },
+      {
+       "label": "Power",
+       "a": "208–240V 50A",
+       "b": "208V 20A",
+       "c": "208V 20A"
+      },
+      {
+       "label": "Restocked From",
+       "a": "Inside the kiosk",
+       "b": "The side",
+       "c": "Inside the building"
+      },
+      {
+       "label": "Capacity",
+       "a": "70 pizzas",
+       "b": "70 pizzas",
+       "c": "70 pizzas"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "kiosk-atm",
+   "title": "ATM Kiosk",
+   "path": "/kiosk-atm",
+   "entries": [
+    {
+     "label": "Top: Small label",
+     "max": 40,
+     "key": "hero.eyebrow",
+     "type": "text",
+     "default": "ATM Kiosk"
+    },
+    {
+     "label": "Top: Headline",
+     "max": 70,
+     "key": "hero.title",
+     "type": "text",
+     "default": "Extend Your Pizzeria Into the Night, Right Through Your Wall."
+    },
+    {
+     "label": "Top: Paragraph",
+     "max": 200,
+     "key": "hero.lede",
+     "type": "text",
+     "default": "Recessed into a building’s exterior, it serves customers outside while you restock it from inside, 24/7, without giving up any floor space."
+    },
+    {
+     "label": "Top: Quick facts",
+     "max": null,
+     "key": "hero.facts",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 20
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 30
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Capacity",
+       "value": "70 Pizzas"
+      },
+      {
+       "label": "Ready In",
+       "value": "3–4 Minutes"
+      },
+      {
+       "label": "Footprint",
+       "value": "8'0\" × 5'0\""
+      }
+     ]
+    },
+    {
+     "label": "Why The ATM Kiosk: Heading",
+     "max": 50,
+     "key": "row1.title",
+     "type": "text",
+     "default": "Why The ATM Kiosk"
+    },
+    {
+     "label": "Why The ATM Kiosk: Subheading",
+     "max": 110,
+     "key": "row1.sub",
+     "type": "text",
+     "default": "Your building becomes the storefront."
+    },
+    {
+     "label": "Why this kiosk: Cards",
+     "max": null,
+     "key": "why",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 2,
+     "maxItems": 6,
+     "default": [
+      {
+       "title": "Set Into The Wall",
+       "text": "The unit recesses into a building’s exterior, so only its face shows on the street."
+      },
+      {
+       "title": "Restocked From Inside",
+       "text": "Your team loads it from inside the building, out of the weather and out of sight."
+      },
+      {
+       "title": "A Window On The Robot",
+       "text": "A side window lets customers watch the robotic arm prepare their pizza."
+      },
+      {
+       "title": "The Most Affordable",
+       "text": "At $86,078 USD it is the lowest-priced of the three kiosks, with the same 70-pizza capacity."
+      }
+     ]
+    },
+    {
+     "label": "How It Works: Heading",
+     "max": 50,
+     "key": "row2.title",
+     "type": "text",
+     "default": "How It Works"
+    },
+    {
+     "label": "How It Works: Subheading",
+     "max": 110,
+     "key": "row2.sub",
+     "type": "text",
+     "default": "From tap to hot pizza in minutes."
+    },
+    {
+     "label": "How it works: Steps",
+     "max": null,
+     "key": "steps",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "Tap",
+       "text": "Customers pick a pizza on the 32\" touchscreen and add coupon or loyalty codes."
+      },
+      {
+       "title": "Pay",
+       "text": "Cards, mobile wallets and NFC, plus campus meal plans."
+      },
+      {
+       "title": "Bake",
+       "text": "A robotic arm moves the pizza to a patented convection oven, where it bakes in its box."
+      },
+      {
+       "title": "Collect",
+       "text": "Out through the hatch in 3–4 minutes, with a disposable knife on the side."
+      }
+     ]
+    },
+    {
+     "label": "Built To Sell: Heading",
+     "max": 50,
+     "key": "row3.title",
+     "type": "text",
+     "default": "Built To Sell"
+    },
+    {
+     "label": "Built To Sell: Subheading",
+     "max": 110,
+     "key": "row3.sub",
+     "type": "text",
+     "default": "What every kiosk does for you."
+    },
+    {
+     "label": "Built to sell: Cards",
+     "max": null,
+     "key": "sell",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 50
+      },
+      {
+       "key": "text",
+       "label": "Text",
+       "type": "text",
+       "max": 200
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "Tap To Pay",
+       "text": "Cards, mobile wallets and NFC, plus campus meal plans, on the built-in terminal."
+      },
+      {
+       "title": "Ad Revenue On Screen",
+       "text": "Run ads on the 32\" touchscreen between orders: a second income from every kiosk."
+      },
+      {
+       "title": "Consistent Pizza, Every Time",
+       "text": "Bake time and temperature are set for each pizza, so every one comes out the same."
+      }
+     ]
+    },
+    {
+     "label": "Specifications: Heading",
+     "max": 50,
+     "key": "row4.title",
+     "type": "text",
+     "default": "Specifications"
+    },
+    {
+     "label": "Specifications: Subheading",
+     "max": 110,
+     "key": "row4.sub",
+     "type": "text",
+     "default": "Every ATM Kiosk, as standard."
+    },
+    {
+     "label": "Specifications",
+     "max": null,
+     "key": "specs",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 70
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Capacity",
+       "value": "70 Pizzas"
+      },
+      {
+       "label": "Ready In",
+       "value": "3–4 Minutes"
+      },
+      {
+       "label": "Dimensions",
+       "value": "8'0\" L × 5'0\" W × 8'0\" H"
+      },
+      {
+       "label": "Weight",
+       "value": "750 kg / 1,654 lbs"
+      },
+      {
+       "label": "Power",
+       "value": "208V 20A Single Phase, 120V Receptacle"
+      },
+      {
+       "label": "Service Access",
+       "value": "From Inside The Building"
+      },
+      {
+       "label": "Exterior",
+       "value": "16-Gauge Carbon Steel Paneling"
+      },
+      {
+       "label": "Oven",
+       "value": "Pulsed-Air Convection"
+      },
+      {
+       "label": "Interface",
+       "value": "32\" Touchscreen"
+      },
+      {
+       "label": "Connectivity",
+       "value": "4G Cellular, Remote Monitoring"
+      },
+      {
+       "label": "Uptime",
+       "value": "99%"
+      },
+      {
+       "label": "Warranty",
+       "value": "2 Years"
+      }
+     ]
+    },
+    {
+     "label": "Standard Features: Heading",
+     "max": 50,
+     "key": "row5.title",
+     "type": "text",
+     "default": "Standard Features"
+    },
+    {
+     "label": "Standard Features: Subheading",
+     "max": 110,
+     "key": "row5.sub",
+     "type": "text",
+     "default": "On every unit."
+    },
+    {
+     "label": "Standard features",
+     "max": null,
+     "key": "features",
+     "type": "list",
+     "fixed": false,
+     "fields": [
+      {
+       "key": "text",
+       "label": "Feature",
+       "type": "text",
+       "max": 60
+      }
+     ],
+     "min": 1,
+     "maxItems": null,
+     "default": [
+      {
+       "text": "See-Through Side Window"
+      },
+      {
+       "text": "32\" Interactive Digital Interface"
+      },
+      {
+       "text": "Payment Terminal"
+      },
+      {
+       "text": "Accepts Campus Meal Plans"
+      },
+      {
+       "text": "Disposable Knife Dispenser"
+      },
+      {
+       "text": "IoT: 4G Cellular"
+      },
+      {
+       "text": "Pulsed-Air Convection Oven"
+      },
+      {
+       "text": "Tamper-Proof Locks"
+      },
+      {
+       "text": "Integrated Security Systems"
+      }
+     ]
+    },
+    {
+     "label": "Certified: Heading",
+     "max": 50,
+     "key": "row6.title",
+     "type": "text",
+     "default": "Certified"
+    },
+    {
+     "label": "Certified: Subheading",
+     "max": 110,
+     "key": "row6.sub",
+     "type": "text",
+     "default": "Industry-leading standards."
+    },
+    {
+     "label": "Certifications",
+     "max": null,
+     "key": "certs",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "title",
+       "label": "Title",
+       "type": "text",
+       "max": 40
+      },
+      {
+       "key": "covers",
+       "label": "What it covers",
+       "type": "text",
+       "max": 160
+      },
+      {
+       "key": "matters",
+       "label": "Why it matters",
+       "type": "text",
+       "max": 160
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "title": "NAMA Listed",
+       "covers": "Sanitary design, food temperature control and FDA compliance.",
+       "matters": "Local health inspectors require it before they grant operating permits."
+      },
+      {
+       "title": "UL Certified",
+       "covers": "Electrical safety, fire risk mitigation and component reliability.",
+       "matters": "Building inspectors and insurance companies require it before the kiosk can be plugged into a commercial space."
+      }
+     ]
+    },
+    {
+     "label": "Pricing: Heading",
+     "max": 50,
+     "key": "row7.title",
+     "type": "text",
+     "default": "Pricing"
+    },
+    {
+     "label": "Pricing: Subheading",
+     "max": 110,
+     "key": "row7.sub",
+     "type": "text",
+     "default": "A one-time purchase. No franchise fees."
+    },
+    {
+     "label": "Pricing: Rows",
+     "max": null,
+     "key": "pricing",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Label",
+       "type": "text",
+       "max": 30
+      },
+      {
+       "key": "value",
+       "label": "Value",
+       "type": "text",
+       "max": 40
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "ATM Kiosk"
+      },
+      {
+       "label": "Installation",
+       "value": "$2,999 USD"
+      },
+      {
+       "label": "Warranty",
+       "value": "2 Years, Included"
+      },
+      {
+       "label": "Franchise Fees",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "label": "Compare The Kiosks: Heading",
+     "max": 50,
+     "key": "row8.title",
+     "type": "text",
+     "default": "Compare The Kiosks"
+    },
+    {
+     "label": "Compare The Kiosks: Subheading",
+     "max": 110,
+     "key": "row8.sub",
+     "type": "text",
+     "default": "Same pizzas and technology, three ways to place them."
+    },
+    {
+     "label": "Compare the kiosks: Rows",
+     "max": null,
+     "key": "compare",
+     "type": "list",
+     "fixed": true,
+     "fields": [
+      {
+       "key": "label",
+       "label": "Row label",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "a",
+       "label": "Outdoor",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "b",
+       "label": "Indoor",
+       "type": "text",
+       "max": 60
+      },
+      {
+       "key": "c",
+       "label": "ATM",
+       "type": "text",
+       "max": 60
+      }
+     ],
+     "min": 0,
+     "maxItems": null,
+     "default": [
+      {
+       "label": "Best For",
+       "a": "Open-air sites, parking lots",
+       "b": "Lobbies, cafeterias, hospitals",
+       "c": "Building exteriors, storefronts"
+      },
+      {},
+      {
+       "label": "Dimensions",
+       "a": "10'8\" × 8'0\" × 8'7\"",
+       "b": "9'5\" × 4'5\" × 8'0\"",
+       "c": "8'0\" × 5'0\" × 8'0\""
+      },
+      {
+       "label": "Weight",
+       "a": "1,952 kg",
+       "b": "750 kg",
+       "c": "750 kg"
+      },
+      {
+       "label": "Power",
+       "a": "208–240V 50A",
+       "b": "208V 20A",
+       "c": "208V 20A"
+      },
+      {
+       "label": "Restocked From",
+       "a": "Inside the kiosk",
+       "b": "The side",
+       "c": "Inside the building"
+      },
+      {
+       "label": "Capacity",
+       "a": "70 pizzas",
+       "b": "70 pizzas",
+       "c": "70 pizzas"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "page": "shared",
+   "title": "Kiosk prices",
+   "path": "/kiosk-outdoor",
+   "entries": [
+    {
+     "label": "Outdoor Kiosk price",
+     "max": 16,
+     "key": "@price.outdoor",
+     "type": "text",
+     "default": "$109,617"
+    },
+    {
+     "label": "Indoor Kiosk price",
+     "max": 16,
+     "key": "@price.indoor",
+     "type": "text",
+     "default": "$98,216"
+    },
+    {
+     "label": "ATM Kiosk price",
+     "max": 16,
+     "key": "@price.atm",
+     "type": "text",
+     "default": "$86,078"
+    }
+   ]
+  }
+ ]
+}

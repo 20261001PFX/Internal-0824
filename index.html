@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.poweredbypfx.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://rhzhdtlmzogkfcgocdqk.supabase.co wss://rhzhdtlmzogkfcgocdqk.supabase.co https://www.poweredbypfx.com; base-uri 'none'; form-action 'self'; object-src 'none'">
+<title>PFX Internal</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&display=swap" rel="stylesheet">
+<!--
+  PFX INTERNAL
+  ---------------------------------------------------------
+  Anyone can load this page, but it shows nothing until you sign in,
+  and Supabase only lets emails on the team list (public.team, see
+  supabase/setup.sql) read drafts or change anything. This repo holds
+  no secrets: the key below is Supabase's public publishable key.
+
+  Blog      saves to the "posts" table; the public site reads it live.
+  Website   saves to "site_content"; Publish rebuilds poweredbypfx.com.
+-->
+<style>
+  :root{
+    --red:#C00022; --red-dark:#A80F22;
+    --ink:#11141a; --muted:#5f6b7a; --faint:#8a95a3;
+    --line:#e3e7ec; --panel:#f4f6f8; --bg:#ffffff; --side:#0d0f13;
+    --green:#1c6e37; --green-bg:rgba(28,110,55,.1);
+    --amber:#9a5c00; --amber-bg:rgba(184,113,10,.12);
+    --radius:12px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.5; font-size:15px;}
+  button,input,select,textarea{font:inherit; color:inherit;}
+  a{color:inherit;}
+  [hidden]{display:none !important;}
+
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius); padding:10px 18px; font-weight:600; font-size:14px; border:1.5px solid var(--line); background:#fff; cursor:pointer; white-space:nowrap; text-decoration:none;}
+  .btn:hover{border-color:#c9d0d8;}
+  .btn:disabled{opacity:.55; cursor:default;}
+  .btn-red{background:var(--red); border-color:var(--red); color:#fff;}
+  .btn-red:hover{background:var(--red-dark); border-color:var(--red-dark);}
+  .btn-ghost{border-color:transparent; background:none; color:var(--muted);}
+  .btn-ghost:hover{color:var(--ink); background:var(--panel); border-color:transparent;}
+  .btn-danger{color:var(--red);}
+  .btn-sm{padding:6px 12px; font-size:13px;}
+  :focus-visible{outline:2px solid var(--red); outline-offset:2px;}
+
+  /* ---------- login ---------- */
+  .login{min-height:100%; display:flex; align-items:center; justify-content:center; padding:24px 16px; background:var(--side);}
+  .login-card{background:#fff; width:100%; max-width:380px; border-radius:20px; padding:32px 28px;}
+  .login-card img{height:36px; display:block; margin-bottom:22px;}
+  .login-card h1{font-size:22px; font-weight:700; margin-bottom:4px;}
+  .login-card p{color:var(--muted); font-size:14px; margin-bottom:22px;}
+  .login-card .btn{width:100%; margin-top:6px;}
+
+  /* ---------- fields ---------- */
+  .field{margin-bottom:18px;}
+  .field label{display:block; font-size:13px; font-weight:600; margin-bottom:6px;}
+  .field .row-label{display:flex; justify-content:space-between; align-items:baseline;}
+  .field .link-btn{font-size:12px; color:var(--red); background:none; border:none; cursor:pointer;}
+  .input, .field input[type=text], .field input[type=email], .field input[type=password], .field input[type=date], .field textarea, .field select{
+    width:100%; border:1.5px solid var(--line); border-radius:var(--radius); padding:11px 13px; background:#fff; font-size:14.5px;
+  }
+  .field textarea{resize:vertical; min-height:84px;}
+  .field input:focus, .field textarea:focus, .field select:focus{outline:2px solid var(--red); outline-offset:0; border-color:transparent;}
+  .hint{font-size:12px; color:var(--faint); margin-top:5px;}
+  .counter{font-size:11.5px; margin-top:5px; color:var(--faint);}
+  .counter.good{color:var(--green);} .counter.warn{color:var(--amber);}
+  .msg{font-size:13.5px; border-radius:10px; padding:10px 12px; margin-top:12px;}
+  .msg.err{background:rgba(192,0,34,.08); color:var(--red);}
+  .msg.ok{background:var(--green-bg); color:var(--green);}
+  .msg.info{background:var(--panel); color:var(--muted);}
+
+  /* ---------- app shell ---------- */
+  .app{display:grid; grid-template-columns:232px 1fr; min-height:100%;}
+  .side{background:var(--side); color:#fff; padding:22px 14px; display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh;}
+  .side .brand{display:flex; align-items:center; gap:10px; padding:4px 10px 22px;}
+  .side .brand img{height:26px;}
+  .side .brand span{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.55);}
+  .nav-item{display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; padding:10px 12px; border-radius:10px; border:none; background:none; color:rgba(255,255,255,.75); cursor:pointer; text-align:left; font-size:14.5px;}
+  .nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,.1); color:#fff; font-weight:600;}
+  .nav-item small{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.4);}
+  .side .spacer{flex:1;}
+  .side .who{font-size:12.5px; color:rgba(255,255,255,.5); padding:10px 12px 4px; word-break:break-all;}
+  .side .signout{color:rgba(255,255,255,.75); font-size:13.5px;}
+
+  .main{min-width:0; padding:28px 36px 60px;}
+  .page-top{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:22px;}
+  .page-top h1{font-size:26px; font-weight:700; letter-spacing:-.3px;}
+  .page-top p{color:var(--muted); font-size:14px;}
+  .actions{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+
+  /* ---------- post list ---------- */
+  .banner{border:1.5px dashed #cdd4dc; border-radius:16px; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:18px; background:var(--panel);}
+  .banner b{display:block; margin-bottom:2px;}
+  .banner span{color:var(--muted); font-size:13.5px;}
+  .posts{border:1.5px solid var(--line); border-radius:16px; overflow:hidden;}
+  .post-row{display:grid; grid-template-columns:64px 1fr auto; gap:16px; align-items:center; padding:14px 18px; border-top:1px solid var(--line);}
+  .post-row:first-child{border-top:none;}
+  .post-row .thumb{width:64px; height:44px; border-radius:8px; background:var(--panel) center/cover no-repeat;}
+  .post-row h3{font-size:15px; font-weight:600; line-height:1.35; margin-bottom:3px;}
+  .post-row .meta{font-size:12.5px; color:var(--faint); display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .pill{font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px;}
+  .pill.published{background:var(--green-bg); color:var(--green);}
+  .pill.draft{background:var(--amber-bg); color:var(--amber);}
+  .empty{padding:40px 20px; text-align:center; color:var(--muted);}
+
+  /* ---------- editor ---------- */
+  .editor{display:grid; grid-template-columns:minmax(0,1fr) 360px; gap:24px; align-items:start;}
+  .canvas{border:1.5px solid var(--line); border-radius:16px; padding:24px;}
+  .cover{position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:16/9; background:var(--panel); border:1.5px dashed #cdd4dc; display:flex; align-items:center; justify-content:center; cursor:pointer; margin-bottom:20px; color:var(--muted); font-size:14px; text-align:center; padding:12px;}
+  .cover.has{border-style:solid; border-color:transparent; padding:0; cursor:default;}
+  .cover img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .cover .cover-actions{position:absolute; top:10px; right:10px; display:flex; gap:6px;}
+  .cover .cover-actions .btn{background:rgba(255,255,255,.95);}
+  .title-input{width:100%; border:none; font-size:30px; font-weight:800; letter-spacing:-.5px; line-height:1.2; margin-bottom:14px; resize:none; overflow:hidden; background:none;}
+  .title-input:focus{outline:none;}
+  .toolbar{display:flex; flex-wrap:wrap; gap:4px; align-items:center; border:1.5px solid var(--line); border-radius:var(--radius); padding:6px; margin-bottom:14px; position:sticky; top:8px; background:#fff; z-index:5;}
+  .toolbar select{border:1.5px solid var(--line); border-radius:10px; padding:6px 8px; font-size:13px; background:#fff;}
+  .tb{min-width:34px; height:34px; padding:0 8px; border-radius:10px; border:1.5px solid transparent; background:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; font-size:14px;}
+  .tb:hover{background:var(--panel);}
+  .tb.on{border-color:var(--red); color:var(--red); background:rgba(192,0,34,.06);}
+  .tb-div{width:1px; height:22px; background:var(--line); margin:0 4px;}
+  .body{min-height:360px; outline:none; font-size:16px; line-height:1.75; color:#222;}
+  .body:empty:before{content:"Start writing, or paste your text here…"; color:#b3bac3;}
+  .body p{margin-bottom:14px;}
+  .body h2{font-size:24px; font-weight:700; margin:22px 0 10px; line-height:1.3;}
+  .body h3{font-size:19px; font-weight:700; margin:18px 0 8px;}
+  .body ul,.body ol{margin:0 0 14px 24px;}
+  .body li{margin-bottom:4px;}
+  .body blockquote{border-left:3px solid var(--red); padding-left:14px; color:var(--muted); margin:0 0 14px;}
+  .body a{color:var(--red);}
+  .body img{max-width:100%; border-radius:var(--radius); margin:12px 0; display:block;}
+  .panel{border:1.5px solid var(--line); border-radius:16px; padding:20px; position:sticky; top:16px;}
+  .panel h2{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;}
+  .panel .btns{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;}
+  .panel .btns .wide{grid-column:1 / -1;}
+  .panel .danger-row{display:flex; justify-content:space-between; margin-top:14px; padding-top:12px; border-top:1px solid var(--line);}
+  .serp{background:var(--panel); border-radius:var(--radius); padding:12px 14px; margin-bottom:18px;}
+  .serp .u{font-size:12px; color:var(--green); word-break:break-all;}
+  .serp .t{font-size:15.5px; color:#1a0dab; line-height:1.3; margin:2px 0;}
+  .serp .d{font-size:12.5px; color:#4d5156;}
+  .tag-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .tag-chips button{font-size:11.5px; border:1.5px solid var(--line); background:#fff; border-radius:20px; padding:3px 10px; cursor:pointer; color:var(--muted);}
+  .tag-chips button:hover{border-color:var(--red); color:var(--red);}
+
+  /* ---------- website editor ---------- */
+  .ws-tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px;}
+  .ws-tab{padding:8px 14px; border-radius:10px; border:1.5px solid var(--line); background:#fff; cursor:pointer; font-size:14px;}
+  .ws-tab.active{background:var(--ink); border-color:var(--ink); color:#fff; font-weight:600;}
+  .ws-tab i{font-style:normal; color:var(--amber); margin-left:6px;}
+  .ws-tab.active i{color:#ffc46b;}
+  .ws-group{border:1.5px solid var(--line); border-radius:16px; padding:20px; margin-bottom:16px; max-width:820px;}
+  .ws-group > h2{font-size:16px; font-weight:700; margin-bottom:14px;}
+  .ws-item{border:1.5px solid var(--line); border-radius:12px; padding:14px; margin-bottom:10px; background:var(--panel);}
+  .ws-item-top{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px;}
+  .ws-item-top b{font-size:13px; color:var(--muted); font-weight:600;}
+  .ws-item .field{margin-bottom:10px;}
+  .ws-item .field:last-child{margin-bottom:0;}
+  .ws-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 12px;}
+  .ws-toggle{display:flex; align-items:center; gap:10px; font-size:14.5px; cursor:pointer; margin-bottom:6px;}
+  .ws-toggle input{width:18px; height:18px; accent-color:var(--red);}
+  .ws-history{border:1.5px solid var(--line); border-radius:16px; padding:14px 18px; margin-bottom:16px; max-width:820px;}
+  .ws-history div{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:7px 0; font-size:14px;}
+  /* blog preview */
+  .pv{position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:50; display:flex; justify-content:center; padding:24px 16px; overflow:auto;}
+  .pv-card{background:#fff; border-radius:16px; width:100%; max-width:760px; padding:28px; height:max-content;}
+  .pv-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; color:var(--muted); font-size:13px;}
+  .pv-card > img{width:100%; border-radius:12px; margin-bottom:16px;}
+  .pv-card h1{font-size:30px; line-height:1.2; margin-bottom:8px;}
+  .pv-card .lede{color:var(--muted); margin-bottom:16px;}
+
+  /* ---------- coming soon ---------- */
+  .soon{border:1.5px dashed #cdd4dc; border-radius:16px; padding:36px 28px; max-width:640px;}
+  .soon h2{font-size:20px; margin-bottom:8px;}
+  .soon p{color:var(--muted); margin-bottom:8px;}
+
+  .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:11px 18px; border-radius:12px; font-size:14px; z-index:100; box-shadow:0 8px 30px rgba(0,0,0,.2); max-width:calc(100% - 32px);}
+  .toast.err{background:var(--red);}
+
+  @media (max-width:1100px){
+    .editor{grid-template-columns:1fr;}
+    .panel{position:static;}
+  }
+  @media (max-width:760px){
+    .app{grid-template-columns:1fr;}
+    .side{position:static; height:auto; flex-direction:row; flex-wrap:wrap; padding:12px 16px; align-items:center;}
+    .side .brand{padding:0 8px 0 0;}
+    .side .spacer, .side .who{display:none;}
+    .nav-item{width:auto; padding:8px 10px;}
+    .nav-item small{display:none;}
+    .main{padding:20px 16px 48px;}
+    .post-row{grid-template-columns:1fr; gap:8px;}
+    .ws-grid{grid-template-columns:1fr;}
+    .post-row .thumb{display:none;}
+    .canvas{padding:16px;}
+    .title-input{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div class="login" id="loginView" hidden>
+  <form class="login-card" id="loginForm">
+    <img src="assets/pfx-dark.png" alt="PFX">
+    <h1>Sign in</h1>
+    <p>PFX internal tools: blog, documents and forms.</p>
+    <div class="field">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" autocomplete="current-password" required>
+    </div>
+    <button class="btn btn-red" type="submit" id="loginBtn">Sign in</button>
+    <div class="msg err" id="loginErr" hidden></div>
+  </form>
+</div>
+
+<!-- ================= APP ================= -->
+<div class="app" id="appView" hidden>
+  <aside class="side">
+    <div class="brand"><img src="assets/pfx-light.png" alt="PFX"><span>Internal</span></div>
+    <button class="nav-item active" data-section="blog">Blog</button>
+    <button class="nav-item" data-section="website">Website</button>
+    <button class="nav-item" data-section="documents">Documents <small>Soon</small></button>
+    <button class="nav-item" data-section="forms">Forms <small>Soon</small></button>
+    <button class="nav-item" data-section="social">Social <small>Soon</small></button>
+    <div class="spacer"></div>
+    <div class="who" id="whoAmI"></div>
+    <button class="nav-item signout" id="signOutBtn">Sign out</button>
+  </aside>
+
+  <main class="main">
+    <!-- ----- BLOG: list ----- -->
+    <section id="blogList" data-view="blog">
+      <div class="page-top">
+        <div>
+          <h1>Blog</h1>
+          <p>Published posts appear on <a href="https://www.poweredbypfx.com/blog" target="_blank" rel="noopener">poweredbypfx.com/blog</a> right away.</p>
+        </div>
+        <div class="actions"><button class="btn btn-red" id="newPostBtn">+ New post</button></div>
+      </div>
+      <div class="banner" id="importBanner" hidden>
+        <div>
+          <b>Bring over the posts already on the website</b>
+          <span id="importText"></span>
+        </div>
+        <button class="btn" id="importBtn">Import website posts</button>
+      </div>
+      <div class="posts" id="postList"><div class="empty">Loading posts…</div></div>
+    </section>
+
+    <!-- ----- BLOG: editor ----- -->
+    <section id="blogEditor" data-view="blog" hidden>
+      <div class="page-top">
+        <div class="actions">
+          <button class="btn btn-ghost" id="backBtn">← All posts</button>
+          <span class="pill" id="statusPill"></span>
+        </div>
+        <span class="hint" id="savedHint"></span>
+      </div>
+      <div class="editor">
+        <div class="canvas">
+          <div class="cover" id="cover" tabindex="0" role="button" aria-label="Add a cover image">
+            <span id="coverHint">Click to add a cover image (JPG, PNG or WebP, up to 10 MB)</span>
+            <img id="coverImg" alt="" hidden>
+            <div class="cover-actions" id="coverActions" hidden>
+              <button type="button" class="btn btn-sm" id="coverChange">Change</button>
+              <button type="button" class="btn btn-sm btn-danger" id="coverRemove">Remove</button>
+            </div>
+          </div>
+          <input type="file" id="coverInput" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+          <textarea class="title-input" id="fTitle" rows="1" placeholder="Post title"></textarea>
+          <div class="toolbar" id="toolbar">
+            <select id="blockSel" aria-label="Text style">
+              <option value="P">Paragraph</option>
+              <option value="H2">Heading</option>
+              <option value="H3">Subheading</option>
+              <option value="BLOCKQUOTE">Quote</option>
+            </select>
+            <span class="tb-div"></span>
+            <button type="button" class="tb" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button type="button" class="tb" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button type="button" class="tb" data-cmd="underline" title="Underline"><u>U</u></button>
+            <span class="tb-div"></span>
+            <button type="button" class="tb" data-cmd="insertUnorderedList" title="Bulleted list">• List</button>
+            <button type="button" class="tb" data-cmd="insertOrderedList" title="Numbered list">1. List</button>
+            <span class="tb-div"></span>
+            <button type="button" class="tb" id="linkBtn" title="Link">Link</button>
+            <button type="button" class="tb" id="imgBtn" title="Insert image">Image</button>
+            <button type="button" class="tb" data-cmd="removeFormat" title="Clear formatting">Clear</button>
+          </div>
+          <input type="file" id="bodyImgInput" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+          <div class="body" id="fBody" contenteditable="true"></div>
+        </div>
+
+        <aside class="panel">
+          <h2>Post details</h2>
+          <div class="serp" aria-label="Google preview">
+            <div class="u" id="serpUrl"></div>
+            <div class="t" id="serpTitle"></div>
+            <div class="d" id="serpDesc"></div>
+          </div>
+          <div class="field">
+            <div class="row-label"><label for="fSlug">Web address</label><button type="button" class="link-btn" id="genSlug">From title</button></div>
+            <input type="text" id="fSlug" placeholder="e.g. indoor-vs-outdoor-kiosk">
+            <div class="hint">Opens at poweredbypfx.com/post?p=<b id="slugEcho">…</b></div>
+          </div>
+          <div class="field">
+            <label for="fDesc">Summary</label>
+            <textarea id="fDesc" placeholder="One or two sentences. Shown on the blog card and in Google."></textarea>
+            <div class="counter" id="descCount"></div>
+          </div>
+          <div class="field">
+            <label for="fTags">Tags</label>
+            <input type="text" id="fTags" placeholder="e.g. ROI, Licensee">
+            <div class="hint">Separate with commas.</div>
+            <div class="tag-chips" id="tagChips"></div>
+          </div>
+          <div class="field">
+            <label for="fAuthor">Author</label>
+            <input type="text" id="fAuthor" placeholder="PFX Team">
+          </div>
+          <div class="field">
+            <label for="fDate">Post date</label>
+            <input type="date" id="fDate">
+          </div>
+          <div class="btns">
+            <button class="btn" id="saveBtn">Save draft</button>
+            <button class="btn" id="previewBtn">Preview</button>
+            <button class="btn btn-red wide" id="publishBtn">Publish</button>
+          </div>
+          <div class="msg" id="editorMsg" hidden></div>
+          <div class="danger-row">
+            <button class="btn btn-ghost btn-sm" id="unpublishBtn" hidden>Unpublish</button>
+            <a class="btn btn-ghost btn-sm" id="viewLiveBtn" target="_blank" rel="noopener" hidden>View live ↗</a>
+            <button class="btn btn-ghost btn-sm btn-danger" id="deleteBtn" hidden>Delete</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ----- WEBSITE ----- -->
+    <section data-view="website" hidden>
+      <div class="page-top">
+        <div>
+          <h1>Website</h1>
+          <p id="wsStatus">Edit the text and links on poweredbypfx.com.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ghost" id="wsView" target="_blank" rel="noopener">View live page ↗</a>
+          <button class="btn" id="wsHistory">Earlier versions</button>
+          <button class="btn" id="wsSave">Save draft</button>
+          <button class="btn btn-red" id="wsPublish">Publish</button>
+        </div>
+      </div>
+      <div class="ws-tabs" id="wsTabs" role="tablist"></div>
+      <div class="msg" id="wsMsg" hidden></div>
+      <div class="ws-history" id="wsHistoryBox" hidden></div>
+      <div id="wsForm"><div class="empty">Loading…</div></div>
+    </section>
+
+    <!-- ----- coming soon sections ----- -->
+    <section data-view="documents" hidden>
+      <div class="page-top"><div><h1>Documents</h1><p>Legal documents on PFX letterhead.</p></div></div>
+      <div class="soon"><h2>Coming next</h2><p>Paste your wording and get it on PFX letterhead, ready to download as PDF or Word, or save to Dropbox.</p></div>
+    </section>
+    <section data-view="forms" hidden>
+      <div class="page-top"><div><h1>Forms</h1><p>Forms with fields, legal text and signatures.</p></div></div>
+      <div class="soon"><h2>Coming next</h2><p>List the fields you want (first name, phone, email, signature…) and get a finished PFX form, with legal text and signature blocks if you need them.</p></div>
+    </section>
+    <section data-view="social" hidden>
+      <div class="page-top"><div><h1>Social</h1><p>Instagram posts made with Claude.</p></div></div>
+      <div class="soon"><h2>Coming later</h2><p>Describe a post and Claude writes the caption and lays out a branded 1080×1080 graphic, ready to download.</p></div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" integrity="sha384-AkNSQdptcXlJ0/NBZc4qGk86cDVXcCevwoWgEKIpHOEfbvlXGLlIkimQtONt8KNf" crossorigin="anonymous"></script>
+<script>
+(function () {
+  'use strict';
+
+  var cfg = {
+    url: 'https://rhzhdtlmzogkfcgocdqk.supabase.co',
+    key: 'sb_publishable_sVcjNjTarvQlkZp_vFd2sA_m8YzBC-R'   // public by design; access is enforced by Supabase's rules
+  };
+  var sb = window.supabase.createClient(cfg.url, cfg.key, {
+    auth: { persistSession: true, autoRefreshToken: true, storageKey: 'pfx-internal-auth' }
+  });
+  var BUCKET = 'blog-images';
+  var SITE = 'https://www.poweredbypfx.com';
+  var TAG_SUGGESTIONS = ['Automation', 'ROI', 'Licensee', 'Kiosk Models', 'Case Study', 'Industry Trends', 'Support', 'Business Model'];
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function slugify(s) { return String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80); }
+  function today() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function fmtDate(iso) { if (!iso) return ''; var d = new Date(iso + 'T00:00:00'); return isNaN(d) ? iso : d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); }
+  // Post images saved as website paths ("Images/blog/x.webp") load from the website.
+  function sitePath(src) { return !src ? '' : /^(https?:|data:|\/)/.test(src) ? src : '/' + src; }
+  function imgUrl(src) { var p = sitePath(src); return p.charAt(0) === '/' ? SITE + p : p; }
+
+  var toastTimer;
+  function toast(text, isErr) {
+    var t = $('toast'); t.textContent = text; t.className = 'toast' + (isErr ? ' err' : ''); t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, isErr ? 6000 : 3000);
+  }
+  function friendlyError(err) {
+    var m = (err && (err.message || err.error_description)) || String(err);
+    if (/row-level security|permission denied|not authorized/i.test(m)) return 'Your login isn\'t on the PFX team list yet. Add your email to the team table in Supabase (see supabase/setup.sql).';
+    if (/duplicate key|already exists|23505/i.test(m)) return 'Another post already uses that web address. Change it and try again.';
+    if (/Could not find the table|PGRST205|relation .* does not exist/i.test(m)) return 'The database isn\'t set up yet. Run supabase/setup.sql in the Supabase SQL Editor.';
+    if (/Bucket not found/i.test(m)) return 'The image storage isn\'t set up yet. Run supabase/setup.sql in the Supabase SQL Editor.';
+    if (/Invalid login credentials/i.test(m)) return 'That email and password don\'t match. Check them and try again.';
+    if (/Email not confirmed/i.test(m)) return 'This email hasn\'t been confirmed yet. In Supabase, open Authentication → Users and confirm it.';
+    return m;
+  }
+
+  /* ================= AUTH ================= */
+  var user = null;
+  function showLogin() { $('appView').hidden = true; $('loginView').hidden = false; $('loginEmail').focus(); }
+  function showApp() { $('loginView').hidden = true; $('appView').hidden = false; $('whoAmI').textContent = user.email; showSection('blog'); }
+
+  $('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = $('loginBtn'), errBox = $('loginErr');
+    btn.disabled = true; btn.textContent = 'Signing in…'; errBox.hidden = true;
+    sb.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPassword').value })
+      .then(function (res) {
+        if (res.error) throw res.error;
+        $('loginPassword').value = '';
+      })
+      .catch(function (err) { errBox.textContent = friendlyError(err); errBox.hidden = false; })
+      .finally(function () { btn.disabled = false; btn.textContent = 'Sign in'; });
+  });
+  $('signOutBtn').addEventListener('click', function () {
+    if ((dirty || window.PFXWebsite.dirty()) && !confirm('You have unsaved changes. Sign out anyway?')) return;
+    dirty = false; window.PFXWebsite.reset(); sb.auth.signOut();
+  });
+  sb.auth.onAuthStateChange(function (event, session) {
+    var next = session ? session.user : null;
+    if (next && user && next.id === user.id) { user = next; return; }   // token refresh
+    user = next;
+    if (user) showApp(); else showLogin();
+  });
+
+  /* ================= SECTIONS ================= */
+  function showSection(name) {
+    document.querySelectorAll('.nav-item[data-section]').forEach(function (b) { b.classList.toggle('active', b.dataset.section === name); });
+    document.querySelectorAll('main > section').forEach(function (s) { s.hidden = s.dataset.view !== name; });
+    if (name === 'blog') { $('blogEditor').hidden = true; $('blogList').hidden = false; loadPosts(); }
+    if (name === 'website') window.PFXWebsite.open();
+  }
+  document.querySelectorAll('.nav-item[data-section]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if ((dirty || window.PFXWebsite.dirty()) && !confirm('You have unsaved changes. Leave anyway?')) return;
+      dirty = false; window.PFXWebsite.reset(); showSection(b.dataset.section);
+    });
+  });
+
+  /* ================= BLOG LIST ================= */
+  var posts = [];
+  function loadPosts() {
+    $('postList').innerHTML = '<div class="empty">Loading posts…</div>';
+    sb.from('posts').select('id,slug,title,excerpt,image,status,date,updated_at,updated_by').order('date', { ascending: false })
+      .then(function (res) {
+        if (res.error) throw res.error;
+        posts = res.data || [];
+        return posts.length ? null : loadWebsitePosts();
+      })
+      .then(function () {
+        renderList();
+      })
+      .catch(function (err) { $('postList').innerHTML = '<div class="empty">' + esc(friendlyError(err)) + '</div>'; });
+  }
+  // Only needed for the one-time import: read the posts built into the website.
+  var sitePosts = null;
+  function loadWebsitePosts() {
+    if (sitePosts) return Promise.resolve();
+    return new Promise(function (resolve) {
+      var el = document.createElement('script');
+      el.src = SITE + '/blog-data.js';
+      el.onload = function () { sitePosts = (typeof PFX_BLOG_POSTS !== 'undefined') ? PFX_BLOG_POSTS : []; resolve(); };
+      el.onerror = function () { sitePosts = []; resolve(); };
+      document.head.appendChild(el);
+    });
+  }
+  function staticPostsToImport() {
+    var builtIn = sitePosts || [];
+    var have = {}; posts.forEach(function (p) { have[p.slug] = true; });
+    // blog-data.js swaps in Supabase posts once there are any, so only offer the import before that.
+    return posts.length ? [] : builtIn.filter(function (p) { return !have[p.slug]; });
+  }
+  function renderList() {
+    var toImport = staticPostsToImport();
+    $('importBanner').hidden = !toImport.length;
+    $('importText').textContent = toImport.length + ' post' + (toImport.length === 1 ? ' is' : 's are') + ' on the website but not in Supabase yet. Import them once so you can edit them here. Nothing on the site changes.';
+    if (!posts.length) { $('postList').innerHTML = '<div class="empty">No posts yet. Click <b>New post</b> to write one.</div>'; return; }
+    $('postList').innerHTML = posts.map(function (p, i) {
+      return '<div class="post-row">' +
+        '<div class="thumb" style="background-image:' + (p.image ? 'url(&quot;' + esc(imgUrl(p.image)) + '&quot;)' : 'none') + '"></div>' +
+        '<div><h3>' + esc(p.title || '(untitled)') + '</h3><div class="meta">' +
+          '<span class="pill ' + p.status + '">' + (p.status === 'published' ? 'Live' : 'Draft') + '</span>' +
+          '<span>' + esc(fmtDate(p.date)) + '</span>' +
+          (p.updated_by ? '<span>Edited by ' + esc(p.updated_by) + '</span>' : '') +
+        '</div></div>' +
+        '<div class="actions">' +
+          (p.status === 'published' ? '<a class="btn btn-sm btn-ghost" href="' + SITE + '/post?p=' + encodeURIComponent(p.slug) + '" target="_blank" rel="noopener">View ↗</a>' : '') +
+          '<button class="btn btn-sm" data-edit="' + i + '">Edit</button>' +
+        '</div></div>';
+    }).join('');
+    $('postList').querySelectorAll('[data-edit]').forEach(function (b) {
+      b.addEventListener('click', function () { openEditor(posts[+b.dataset.edit].id); });
+    });
+  }
+  $('newPostBtn').addEventListener('click', function () { openEditor(null); });
+  $('importBtn').addEventListener('click', function () {
+    var rows = staticPostsToImport().map(function (p) {
+      return { slug: p.slug, title: p.title || '', excerpt: p.excerpt || '', body: p.body || '', author: p.author || 'PFX Team',
+               image: p.image ? sitePath(p.image) : null, tags: p.tags || [], date: p.date || today(), status: 'published' };
+    });
+    if (!rows.length) return;
+    var btn = $('importBtn'); btn.disabled = true; btn.textContent = 'Importing…';
+    sb.from('posts').upsert(rows, { onConflict: 'slug', ignoreDuplicates: true }).then(function (res) {
+      if (res.error) throw res.error;
+      toast('Imported ' + rows.length + ' posts. They\'re live exactly as before.');
+      loadPosts();
+    }).catch(function (err) { toast(friendlyError(err), true); })
+      .finally(function () { btn.disabled = false; btn.textContent = 'Import website posts'; });
+  });
+
+  /* ================= EDITOR ================= */
+  var current = null;      // the post row being edited (null fields for a new one)
+  var dirty = false;
+  var slugTouched = false;
+  var fTitle = $('fTitle'), fSlug = $('fSlug'), fDesc = $('fDesc'), fTags = $('fTags'), fAuthor = $('fAuthor'), fDate = $('fDate'), fBody = $('fBody');
+
+  window.addEventListener('beforeunload', function (e) { if (dirty || window.PFXWebsite.dirty()) { e.preventDefault(); e.returnValue = ''; } });
+
+  function openEditor(id) {
+    $('blogList').hidden = true; $('blogEditor').hidden = false; window.scrollTo(0, 0);
+    setMsg('');
+    if (!id) {
+      fill({ id: null, slug: '', title: '', excerpt: '', body: '', image: null, author: 'PFX Team', tags: [], date: today(), status: 'draft' });
+      fTitle.focus();
+      return;
+    }
+    fill(null);
+    $('savedHint').textContent = 'Loading…';
+    sb.from('posts').select('*').eq('id', id).single().then(function (res) {
+      if (res.error) throw res.error;
+      fill(res.data);
+    }).catch(function (err) { toast(friendlyError(err), true); backToList(true); });
+  }
+  function fill(p) {
+    current = p;
+    var disabled = !p;
+    [fTitle, fSlug, fDesc, fTags, fAuthor, fDate].forEach(function (el) { el.disabled = disabled; });
+    fBody.contentEditable = disabled ? 'false' : 'true';
+    if (!p) return;
+    fTitle.value = p.title || ''; autoGrow();
+    fSlug.value = p.slug || ''; slugTouched = !!p.slug;
+    fDesc.value = p.excerpt || '';
+    fTags.value = (p.tags || []).join(', ');
+    fAuthor.value = p.author || '';
+    fDate.value = p.date || today();
+    fBody.innerHTML = sanitize(p.body || '');
+    setCover(p.image);
+    dirty = false;
+    refreshMeta();
+    $('savedHint').textContent = p.updated_at ? 'Last saved ' + new Date(p.updated_at).toLocaleString() + (p.updated_by ? ' by ' + p.updated_by : '') : 'Not saved yet';
+  }
+  function refreshMeta() {
+    var p = current || {};
+    var live = p.status === 'published';
+    $('statusPill').className = 'pill ' + (live ? 'published' : 'draft');
+    $('statusPill').textContent = live ? 'Live on website' : 'Draft';
+    $('publishBtn').textContent = live ? 'Update live post' : 'Publish';
+    $('saveBtn').textContent = live ? 'Save' : 'Save draft';
+    $('unpublishBtn').hidden = !live;
+    $('viewLiveBtn').hidden = !live;
+    $('viewLiveBtn').href = SITE + '/post?p=' + encodeURIComponent(p.slug || '');
+    $('deleteBtn').hidden = !p.id;
+    var slug = fSlug.value || 'your-post';
+    $('slugEcho').textContent = slug;
+    $('serpUrl').textContent = 'poweredbypfx.com › post?p=' + slug;
+    $('serpTitle').textContent = (fTitle.value || 'Your post title') + ' | PFX Blog';
+    $('serpDesc').textContent = fDesc.value || 'Your summary will show here.';
+    var n = fDesc.value.length, c = $('descCount');
+    c.textContent = n ? n + ' characters' + (n < 100 ? ' (a bit short for Google, aim for 120–156)' : n > 160 ? ' (Google cuts off around 156)' : ' (good length)') : '';
+    c.className = 'counter ' + (n === 0 ? '' : (n < 100 || n > 160) ? 'warn' : 'good');
+    renderTagChips();
+  }
+  function markDirty() { dirty = true; $('savedHint').textContent = 'Unsaved changes'; refreshMeta(); }
+  function autoGrow() { fTitle.style.height = 'auto'; fTitle.style.height = fTitle.scrollHeight + 'px'; }
+
+  fTitle.addEventListener('input', function () {
+    autoGrow();
+    if (!slugTouched) fSlug.value = slugify(fTitle.value);
+    markDirty();
+  });
+  fTitle.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); fBody.focus(); } });
+  fSlug.addEventListener('input', function () { slugTouched = true; markDirty(); });
+  fSlug.addEventListener('blur', function () { fSlug.value = slugify(fSlug.value); refreshMeta(); });
+  $('genSlug').addEventListener('click', function () { slugTouched = false; fSlug.value = slugify(fTitle.value); markDirty(); });
+  [fDesc, fTags, fAuthor, fDate].forEach(function (el) { el.addEventListener('input', markDirty); });
+  fBody.addEventListener('input', markDirty);
+
+  function parseTags() { return fTags.value.split(',').map(function (t) { return t.trim(); }).filter(Boolean).filter(function (t, i, a) { return a.indexOf(t) === i; }); }
+  function renderTagChips() {
+    var have = parseTags().map(function (t) { return t.toLowerCase(); });
+    $('tagChips').innerHTML = TAG_SUGGESTIONS.filter(function (t) { return have.indexOf(t.toLowerCase()) === -1; })
+      .map(function (t) { return '<button type="button" data-tag="' + esc(t) + '">+ ' + esc(t) + '</button>'; }).join('');
+  }
+  $('tagChips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-tag]'); if (!b) return;
+    fTags.value = parseTags().concat([b.dataset.tag]).join(', ');
+    markDirty();
+  });
+
+  // ---- cover image ----
+  var coverUrl = null;
+  function setCover(url) {
+    coverUrl = url || null;
+    $('cover').classList.toggle('has', !!coverUrl);
+    $('coverImg').hidden = !coverUrl; $('coverActions').hidden = !coverUrl; $('coverHint').hidden = !!coverUrl;
+    $('coverImg').src = coverUrl ? imgUrl(coverUrl) : '';
+  }
+  $('cover').addEventListener('click', function (e) { if (!coverUrl && !e.target.closest('button')) $('coverInput').click(); });
+  $('cover').addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !coverUrl) { e.preventDefault(); $('coverInput').click(); } });
+  $('coverChange').addEventListener('click', function () { $('coverInput').click(); });
+  $('coverRemove').addEventListener('click', function () { setCover(null); markDirty(); });
+  $('coverInput').addEventListener('change', function () {
+    var file = this.files[0]; this.value = '';
+    if (!file) return;
+    $('coverHint').textContent = 'Uploading…';
+    uploadImage(file, 'covers').then(function (url) { setCover(url); markDirty(); })
+      .catch(function (err) { toast(friendlyError(err), true); })
+      .finally(function () { $('coverHint').textContent = 'Click to add a cover image (JPG, PNG or WebP, up to 10 MB)'; });
+  });
+
+  function uploadImage(file, folder) {
+    if (file.size > 10 * 1024 * 1024) return Promise.reject(new Error('That image is over 10 MB. Please use a smaller one.'));
+    var ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+    var base = slugify(file.name.replace(/\.[^.]+$/, '')) || 'image';
+    var path = folder + '/' + Date.now().toString(36) + '-' + base + '.' + ext;
+    return sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false, cacheControl: '31536000' })
+      .then(function (res) {
+        if (res.error) throw res.error;
+        return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+      });
+  }
+
+  // ---- rich text ----
+  var savedRange = null;
+  function keepSelection() { var s = window.getSelection(); if (s.rangeCount && fBody.contains(s.anchorNode)) savedRange = s.getRangeAt(0).cloneRange(); }
+  function restoreSelection() {
+    fBody.focus();
+    if (savedRange) { var s = window.getSelection(); s.removeAllRanges(); s.addRange(savedRange); }
+  }
+  document.addEventListener('selectionchange', function () {
+    if (!fBody.contains(document.activeElement) && document.activeElement !== fBody) return;
+    keepSelection();
+    try {
+      var block = String(document.queryCommandValue('formatBlock') || '').toUpperCase();
+      $('blockSel').value = ['H2', 'H3', 'BLOCKQUOTE'].indexOf(block) > -1 ? block : 'P';
+      document.querySelectorAll('.tb[data-cmd]').forEach(function (b) {
+        if (b.dataset.cmd !== 'removeFormat') b.classList.toggle('on', document.queryCommandState(b.dataset.cmd));
+      });
+    } catch (e) {}
+  });
+  document.querySelectorAll('.tb[data-cmd]').forEach(function (b) {
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', function () { restoreSelection(); document.execCommand(b.dataset.cmd, false, null); markDirty(); });
+  });
+  $('blockSel').addEventListener('change', function () { restoreSelection(); document.execCommand('formatBlock', false, this.value); markDirty(); });
+  $('linkBtn').addEventListener('mousedown', function (e) { e.preventDefault(); });
+  $('linkBtn').addEventListener('click', function () {
+    restoreSelection();
+    if (!String(window.getSelection())) { toast('Highlight the words you want to link first.', true); return; }
+    var url = prompt('Link to (a web address, or a page like /roicalculator):', 'https://');
+    if (!url || url === 'https://') return;
+    if (!/^(https?:\/\/|mailto:|\/)/i.test(url)) url = 'https://' + url;
+    restoreSelection(); document.execCommand('createLink', false, url); markDirty();
+  });
+  $('imgBtn').addEventListener('mousedown', function (e) { e.preventDefault(); });
+  $('imgBtn').addEventListener('click', function () { keepSelection(); $('bodyImgInput').click(); });
+  $('bodyImgInput').addEventListener('change', function () {
+    var file = this.files[0]; this.value = '';
+    if (!file) return;
+    toast('Uploading image…');
+    uploadImage(file, 'body').then(function (url) {
+      restoreSelection(); document.execCommand('insertImage', false, url); markDirty(); toast('Image added.');
+    }).catch(function (err) { toast(friendlyError(err), true); });
+  });
+  // Pasting from Word, Google Docs or a website keeps headings, lists, bold and links but drops their styling.
+  fBody.addEventListener('paste', function (e) {
+    var cd = e.clipboardData; if (!cd) return;
+    e.preventDefault();
+    var html = cd.getData('text/html');
+    var clean = html ? sanitize(html) : textToHtml(cd.getData('text/plain'));
+    document.execCommand('insertHTML', false, clean);
+    markDirty();
+  });
+  function textToHtml(text) {
+    return String(text || '').replace(/\r\n?/g, '\n').split(/\n{2,}/).map(function (para) {
+      return para.trim() ? '<p>' + esc(para.trim()).replace(/\n/g, '<br>') + '</p>' : '';
+    }).join('');
+  }
+
+  var ALLOWED = { P: 1, H2: 1, H3: 1, UL: 1, OL: 1, LI: 1, STRONG: 1, EM: 1, U: 1, A: 1, BR: 1, IMG: 1, BLOCKQUOTE: 1 };
+  var RENAME = { B: 'STRONG', I: 'EM', H1: 'H2', H4: 'H3', H5: 'H3', H6: 'H3', DIV: 'P' };
+  function safeUrl(u) { u = String(u || '').trim(); return /^(https?:\/\/|mailto:|\/(?!\/)|#)/i.test(u) ? u : ''; }
+  function sanitize(html) {
+    var doc = new DOMParser().parseFromString('<body>' + html + '</body>', 'text/html');
+    var out = document.createElement('div');
+    (function walk(src, dest) {
+      Array.prototype.forEach.call(src.childNodes, function (n) {
+        if (n.nodeType === 3) { dest.appendChild(document.createTextNode(n.nodeValue)); return; }
+        if (n.nodeType !== 1) return;
+        var tag = n.tagName;
+        if (/^(SCRIPT|STYLE|META|LINK|TITLE|IFRAME|OBJECT|NOSCRIPT|svg)$/i.test(tag)) return;
+        var st = n.getAttribute('style') || '';
+        if (tag === 'SPAN' && /font-weight:\s*(bold|[6-9]00)/i.test(st)) tag = 'STRONG';
+        else if (tag === 'SPAN' && /font-style:\s*italic/i.test(st)) tag = 'EM';
+        tag = RENAME[tag] || tag;
+        if (!ALLOWED[tag]) { walk(n, dest); return; }          // keep the text, drop the wrapper
+        var el = document.createElement(tag);
+        if (tag === 'A') { var href = safeUrl(n.getAttribute('href')); if (!href) { walk(n, dest); return; } el.setAttribute('href', href); }
+        if (tag === 'IMG') { var src2 = safeUrl(n.getAttribute('src')); if (!src2) return; el.setAttribute('src', src2); el.setAttribute('alt', n.getAttribute('alt') || ''); }
+        dest.appendChild(el);
+        walk(n, el);
+      });
+    })(doc.body, out);
+    // drop empty paragraphs Word likes to add
+    out.querySelectorAll('p').forEach(function (p) { if (!p.textContent.trim() && !p.querySelector('img,br')) p.remove(); });
+    return out.innerHTML;
+  }
+
+  // ---- save / publish ----
+  function setMsg(text, kind) { var m = $('editorMsg'); m.hidden = !text; m.textContent = text || ''; m.className = 'msg ' + (kind || 'info'); }
+  function collect(status) {
+    return {
+      slug: slugify(fSlug.value || fTitle.value),
+      title: fTitle.value.trim(),
+      excerpt: fDesc.value.trim(),
+      body: sanitize(fBody.innerHTML),
+      image: coverUrl,
+      author: fAuthor.value.trim() || 'PFX Team',
+      tags: parseTags(),
+      date: fDate.value || today(),
+      status: status
+    };
+  }
+  function missingFor(row, publishing) {
+    var miss = [];
+    if (!row.title) miss.push('a title');
+    if (!row.slug) miss.push('a web address');
+    if (publishing) {
+      if (!row.excerpt) miss.push('a summary');
+      if (!fBody.textContent.trim() && !fBody.querySelector('img')) miss.push('some text in the post');
+    }
+    return miss;
+  }
+  function save(status, doneText) {
+    if (!current) return Promise.resolve();
+    var row = collect(status);
+    var miss = missingFor(row, status === 'published');
+    if (miss.length) { setMsg('To ' + (status === 'published' ? 'publish' : 'save') + ', add ' + miss.join(', ') + '.', 'err'); return Promise.reject('incomplete'); }
+    if (current.id && current.status === 'published' && current.slug !== row.slug &&
+        !confirm('This post is live at /post?p=' + current.slug + '. Changing the web address will break links to the old one. Continue?')) {
+      return Promise.reject('cancelled');
+    }
+    fSlug.value = row.slug;
+    setBusy(true);
+    var q = current.id ? sb.from('posts').update(row).eq('id', current.id).select().single()
+                       : sb.from('posts').insert(row).select().single();
+    return q.then(function (res) {
+      if (res.error) throw res.error;
+      fill(res.data);
+      setMsg(doneText, 'ok');
+      return res.data;
+    }).catch(function (err) {
+      setMsg(friendlyError(err), 'err'); throw err;
+    }).finally(function () { setBusy(false); });
+  }
+  function setBusy(b) { ['saveBtn', 'publishBtn', 'previewBtn', 'unpublishBtn', 'deleteBtn'].forEach(function (id) { $(id).disabled = b; }); }
+  function noop() {}
+
+  $('saveBtn').addEventListener('click', function () {
+    // Saving a live post as a draft would take it off the site, so "Save" keeps a live post live.
+    var keepLive = current && current.status === 'published';
+    save(keepLive ? 'published' : 'draft', keepLive ? 'Saved. The live post is updated.' : 'Draft saved. Only your team can see it.').catch(noop);
+  });
+  $('publishBtn').addEventListener('click', function () {
+    var wasLive = current && current.status === 'published';
+    save('published', wasLive ? 'Updated. The change is live on the website now.' : 'Published! It\'s on poweredbypfx.com/blog now.').then(function (p) {
+      if (p) toast(wasLive ? 'Live post updated.' : 'Post published.');
+    }).catch(noop);
+  });
+  $('unpublishBtn').addEventListener('click', function () {
+    if (!confirm('Take this post off the website? It stays here as a draft.')) return;
+    save('draft', 'Unpublished. It\'s off the website and saved as a draft.').catch(noop);
+  });
+  $('deleteBtn').addEventListener('click', function () {
+    if (!current || !current.id) return;
+    if (!confirm('Delete "' + (current.title || 'this post') + '" for good? This can\'t be undone.')) return;
+    setBusy(true);
+    sb.from('posts').delete().eq('id', current.id).then(function (res) {
+      if (res.error) throw res.error;
+      dirty = false; toast('Post deleted.'); backToList(true);
+    }).catch(function (err) { setMsg(friendlyError(err), 'err'); }).finally(function () { setBusy(false); });
+  });
+  // Preview shows the post here. It isn't on the website until it's published.
+  $('previewBtn').addEventListener('click', function () {
+    var row = collect('draft');
+    var pv = document.createElement('div');
+    pv.className = 'pv';
+    pv.innerHTML = '<div class="pv-card"><div class="pv-top"><span>Preview, not published</span><button class="btn btn-sm" type="button">Close</button></div>' +
+      (row.image ? '<img alt="" src="' + esc(imgUrl(row.image)) + '">' : '') +
+      '<h1>' + esc(row.title || 'Untitled post') + '</h1><p class="lede">' + esc(row.excerpt) + '</p><div class="body">' + row.body + '</div></div>';
+    function close() { pv.remove(); }
+    pv.querySelector('button').addEventListener('click', close);
+    pv.addEventListener('click', function (e) { if (e.target === pv) close(); });
+    document.body.appendChild(pv);
+  });
+
+  function backToList(force) {
+    if (!force && dirty && !confirm('You have unsaved changes. Leave this post?')) return;
+    dirty = false; current = null;
+    $('blogEditor').hidden = true; $('blogList').hidden = false; loadPosts();
+  }
+  $('backBtn').addEventListener('click', function () { backToList(false); });
+
+  // Ctrl/Cmd+S saves
+  document.addEventListener('keydown', function (e) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's' && !$('blogEditor').hidden) { e.preventDefault(); $('saveBtn').click(); }
+  });
+
+  window.PFXApp = { sb: sb, SITE: SITE, esc: esc, toast: toast, friendlyError: friendlyError, user: function () { return user; } };
+})();
+</script>
+<script src="website.js"></script>
+</body>
+</html>
